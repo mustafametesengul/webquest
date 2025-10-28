@@ -18,9 +18,6 @@ async def main() -> None:
         print(r1.model_dump_json(indent=4))
         print(r2.transcript[:100])
 
-        # r = await yt.run(youtube.TranscriptRequest(video_id="Vg65n2wqikI"))
-        # print(r.transcript[:100])
-
 
 if __name__ == "__main__":
     asyncio.run(main())

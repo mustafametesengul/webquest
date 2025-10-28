@@ -46,19 +46,10 @@ class HyperbrowserManager(BrowserManager):
     @override
     @asynccontextmanager
     async def new_context(self) -> AsyncIterator[BrowserContext]:
-        if self._browser is not None:
-            # context = await self._browser.new_context()
-            contexts = self._browser.contexts
-            context = contexts[0] if contexts else await self._browser.new_context()
-            yield context
-            await context.close()
-            return
-
-        session = await self._hyperbrowser_client.sessions.create()
-        async with async_playwright() as p:
-            browser = await p.chromium.connect_over_cdp(
-                session.ws_endpoint,
+        if self._browser is None:
+            raise RuntimeError(
+                "Browser is not initialized. Did you forget to use 'async with'?"
             )
-            contexts = browser.contexts
-            context = contexts[0] if contexts else await browser.new_context()
-            yield context
+        contexts = self._browser.contexts
+        context = contexts[0] if contexts else await self._browser.new_context()
+        yield context

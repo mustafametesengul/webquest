@@ -1,16 +1,16 @@
 from pydantic import BaseModel
 
 
-class SearchRequest(BaseModel):
+class Request(BaseModel):
     query: str
 
 
 class Page(BaseModel):
-    site_title: str
+    site: str
     url: str
     title: str
     description: str
 
 
-class SearchResult(BaseModel):
+class Result(BaseModel):
     pages: list[Page]

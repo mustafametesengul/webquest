@@ -1,0 +1,18 @@
+import asyncio
+
+from webquest.runners.hyperbrowser import Runner
+from webquest.scrapers.any_article import Request, Scraper
+
+
+async def main() -> None:
+    runner = Runner()
+
+    result = await runner.run_single(
+        Scraper(),
+        Request(url="https://www.bbc.com/news/articles/cy5qgy93w9go"),
+    )
+    print(result.model_dump_json(indent=2))
+
+
+if __name__ == "__main__":
+    asyncio.run(main())

@@ -1,11 +1,11 @@
 import asyncio
 
-from webquest.runners.hyperbrowser import Runner
+from webquest.runners.hyperbrowser import Hyperbrowser
 from webquest.scrapers.any_article import Request, Scraper
 
 
 async def main() -> None:
-    runner = Runner()
+    runner = Hyperbrowser()
     response = await runner.run(
         Scraper(),
         Request(url="https://www.bbc.com/news/articles/cy5qgy93w9go"),

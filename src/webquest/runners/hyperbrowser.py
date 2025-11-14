@@ -3,7 +3,7 @@ from typing import TypeVar
 
 from hyperbrowser import AsyncHyperbrowser
 from playwright.async_api import async_playwright
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from webquest.base_scraper import BaseScraper
@@ -13,21 +13,21 @@ TRaw = TypeVar("TRaw")
 TResponse = TypeVar("TResponse", bound=BaseModel)
 
 
-class Settings(BaseSettings):
+class HyperbrowserSettings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env",
         extra="ignore",
     )
-    hyperbrowser_api_key: str = Field(default=...)
+    hyperbrowser_api_key: str | None = None
 
 
-class Runner:
+class Hyperbrowser:
     def __init__(
         self,
-        settings: Settings | None = None,
+        settings: HyperbrowserSettings | None = None,
         hyperbrowser_client: AsyncHyperbrowser | None = None,
     ):
-        self._settings = settings or Settings()
+        self._settings = settings or HyperbrowserSettings()
         self._hyperbrowser_client = hyperbrowser_client or AsyncHyperbrowser(
             api_key=self._settings.hyperbrowser_api_key,
         )

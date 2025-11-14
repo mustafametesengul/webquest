@@ -1,11 +1,11 @@
 import asyncio
 
-from webquest.runners.hyperbrowser import Runner
+from webquest.runners.hyperbrowser import Hyperbrowser
 from webquest.scrapers.youtube_transcript import Request, Scraper
 
 
 async def main() -> None:
-    runner = Runner()
+    runner = Hyperbrowser()
     response = await runner.run(
         Scraper(),
         Request(video_id="5OyWJeZ6ZrE"),

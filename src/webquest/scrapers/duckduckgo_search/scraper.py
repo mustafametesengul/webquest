@@ -5,7 +5,7 @@ from urllib.parse import quote_plus
 from bs4 import BeautifulSoup
 from playwright.async_api import BrowserContext
 
-from webquest.base import BaseScraper
+from webquest.base_scraper import BaseScraper
 from webquest.scrapers.duckduckgo_search.schemas import (
     Page,
     Request,
@@ -15,7 +15,7 @@ from webquest.scrapers.duckduckgo_search.schemas import (
 
 class Scraper(BaseScraper[Request, str, Response]):
     @override
-    async def collect(
+    async def fetch(
         self,
         context: BrowserContext,
         request: Request,
@@ -39,8 +39,8 @@ class Scraper(BaseScraper[Request, str, Response]):
         return html
 
     @override
-    async def parse(self, collection: str) -> Response:
-        soup = BeautifulSoup(collection, "html.parser")
+    async def parse(self, raw: str) -> Response:
+        soup = BeautifulSoup(raw, "html.parser")
         pages: list[Page] = []
 
         article_tags = soup.find_all("article", {"data-testid": "result"})

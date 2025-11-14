@@ -6,12 +6,11 @@ from webquest.scrapers.any_article import Request, Scraper
 
 async def main() -> None:
     runner = Runner()
-
-    result = await runner.run_single(
+    response = await runner.run(
         Scraper(),
         Request(url="https://www.bbc.com/news/articles/cy5qgy93w9go"),
     )
-    print(result.model_dump_json(indent=2))
+    print(response.model_dump_json(indent=4))
 
 
 if __name__ == "__main__":

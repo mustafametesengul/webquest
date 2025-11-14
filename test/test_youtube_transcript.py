@@ -6,16 +6,11 @@ from webquest.scrapers.youtube_transcript import Request, Scraper
 
 async def main() -> None:
     runner = Runner()
-
-    results = await runner.run(
+    response = await runner.run(
         Scraper(),
-        [
-            Request(video_id="5OyWJeZ6ZrE"),
-        ],
+        Request(video_id="5OyWJeZ6ZrE"),
     )
-
-    for result in results:
-        print(result.model_dump_json(indent=2))
+    print(response.model_dump_json(indent=4))
 
 
 if __name__ == "__main__":

@@ -4,13 +4,13 @@ from typing import override
 from bs4 import BeautifulSoup
 from playwright.async_api import BrowserContext
 
-from webquest.base import BaseScraper
+from webquest.base_scraper import BaseScraper
 from webquest.scrapers.youtube_transcript.schemas import Request, Response
 
 
 class Scraper(BaseScraper[Request, str, Response]):
     @override
-    async def collect(
+    async def fetch(
         self,
         context: BrowserContext,
         request: Request,
@@ -54,8 +54,8 @@ class Scraper(BaseScraper[Request, str, Response]):
         return html
 
     @override
-    async def parse(self, collection: str) -> Response:
-        soup = BeautifulSoup(collection, "html.parser")
+    async def parse(self, raw: str) -> Response:
+        soup = BeautifulSoup(raw, "html.parser")
 
         # Find the transcript segment list renderer
         segment_renderer = soup.select_one("ytd-transcript-segment-list-renderer")

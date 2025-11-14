@@ -4,7 +4,7 @@ from urllib.parse import quote_plus
 from bs4 import BeautifulSoup
 from playwright.async_api import BrowserContext
 
-from webquest.base import BaseScraper
+from webquest.base_scraper import BaseScraper
 from webquest.scrapers.youtube_search.schemas import (
     Channel,
     Post,
@@ -168,13 +168,13 @@ class Scraper(BaseScraper[Request, str, Response]):
         return Response(videos=videos, channels=channels, posts=posts, shorts=shorts)
 
     @override
-    async def parse(self, collection: str) -> Response:
-        soup = BeautifulSoup(collection, "html.parser")
+    async def parse(self, raw: str) -> Response:
+        soup = BeautifulSoup(raw, "html.parser")
         result = self._parse_search_results(soup)
         return result
 
     @override
-    async def collect(self, context: BrowserContext, request: Request) -> str:
+    async def fetch(self, context: BrowserContext, request: Request) -> str:
         url = (
             f"https://www.youtube.com/results?search_query={quote_plus(request.query)}"
         )

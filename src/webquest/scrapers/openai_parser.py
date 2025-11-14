@@ -3,55 +3,51 @@ from typing import Generic, Type, TypeVar, override
 
 from bs4 import BeautifulSoup
 from openai import AsyncOpenAI
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-from webquest.base.scraper import BaseScraper
+from webquest.base_scraper import BaseScraper
 
 TRequest = TypeVar("TRequest", bound=BaseModel)
-TResult = TypeVar("TResult", bound=BaseModel)
+TResponse = TypeVar("TResponse", bound=BaseModel)
 
 
-class Settings(BaseSettings):
+class OpenAIParserSettings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env",
         extra="ignore",
     )
-    openai_api_key: str = Field(default=...)
+    openai_api_key: str | None = None
 
 
-class OpenAIBaseScraper(
-    Generic[TRequest, TResult],
-    BaseScraper[TRequest, str, TResult],
+class OpenAIParser(
+    Generic[TRequest, TResponse],
+    BaseScraper[TRequest, str, TResponse],
     ABC,
 ):
     def __init__(
         self,
-        result_type: Type[TResult],
+        response_type: Type[TResponse],
         openai: AsyncOpenAI | None = None,
-        settings: Settings | None = None,
+        settings: OpenAIParserSettings | None = None,
         model: str = "gpt-5-mini",
-        extra_input: str | None = None,
+        input: str | None = None,
         character_limit: int = 20000,
     ) -> None:
-        self._result_type = result_type
+        self._response_type = response_type
         if settings is None:
-            settings = Settings()
+            settings = OpenAIParserSettings()
         self._settings = settings
         if openai is None:
             openai = AsyncOpenAI(api_key=self._settings.openai_api_key)
         self._openai = openai
         self._model = model
         self._character_limit = character_limit
-
-        self._input = "Parse the following web page and extract the main article."
-        if extra_input is not None:
-            self._input = f"{self._input}\n\n{extra_input}"
-        self._input = f"{self._input}\n\nWeb page:\n\n"
+        self._input = input or ""
 
     @override
-    async def parse(self, collection: str) -> TResult:
-        soup = BeautifulSoup(collection, "html.parser")
+    async def parse(self, raw: str) -> TResponse:
+        soup = BeautifulSoup(raw, "html.parser")
         text = soup.get_text(separator="\n", strip=True)
 
         if len(text) > self._character_limit:
@@ -61,7 +57,7 @@ class OpenAIBaseScraper(
 
         response = await self._openai.responses.parse(
             input=f"{self._input}{text}",
-            text_format=self._result_type,
+            text_format=self._response_type,
             model=self._model,
             reasoning={"effort": "minimal"},
         )

@@ -6,17 +6,15 @@ from webquest.scrapers.duckduckgo_search import Request, Scraper
 
 async def main() -> None:
     runner = Runner()
-
-    results = await runner.run(
+    responses = await runner.run_multiple(
         Scraper(),
         [
             Request(query="H3 Podcast"),
             Request(query="Moist Critical Gaming"),
         ],
     )
-
-    for result in results:
-        print(result.model_dump_json(indent=2))
+    for response in responses:
+        print(response.model_dump_json(indent=4))
 
 
 if __name__ == "__main__":

@@ -5,5 +5,5 @@ class Request(BaseModel):
     video_id: str
 
 
-class Result(BaseModel):
+class Response(BaseModel):
     transcript: str

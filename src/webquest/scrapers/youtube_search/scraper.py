@@ -9,13 +9,13 @@ from webquest.scrapers.youtube_search.schemas import (
     Channel,
     Post,
     Request,
-    Result,
+    Response,
     Short,
     Video,
 )
 
 
-class Scraper(BaseScraper[Request, str, Result]):
+class Scraper(BaseScraper[Request, str, Response]):
     def _parse_videos(self, soup: BeautifulSoup) -> list[Video]:
         videos: list[Video] = []
         video_tags = soup.find_all("ytd-video-renderer")
@@ -160,15 +160,15 @@ class Scraper(BaseScraper[Request, str, Result]):
         # Implementation for parsing shorts goes here
         return shorts
 
-    def _parse_search_results(self, soup: BeautifulSoup) -> Result:
+    def _parse_search_results(self, soup: BeautifulSoup) -> Response:
         videos = self._parse_videos(soup)
         channels = self._parse_channels(soup)
         posts = self._parse_posts(soup)
         shorts = self._parse_shorts(soup)
-        return Result(videos=videos, channels=channels, posts=posts, shorts=shorts)
+        return Response(videos=videos, channels=channels, posts=posts, shorts=shorts)
 
     @override
-    async def parse(self, collection: str) -> Result:
+    async def parse(self, collection: str) -> Response:
         soup = BeautifulSoup(collection, "html.parser")
         result = self._parse_search_results(soup)
         return result

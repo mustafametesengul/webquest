@@ -7,21 +7,21 @@ from webquest.base.scraper import BaseScraper
 
 TRequest = TypeVar("TRequest", bound=BaseModel)
 TCollection = TypeVar("TCollection")
-TResult = TypeVar("TResult", bound=BaseModel)
+TResponse = TypeVar("TResponse", bound=BaseModel)
 
 
 class BaseRunner(ABC):
     @abstractmethod
     async def run(
         self,
-        scraper: BaseScraper[TRequest, TCollection, TResult],
+        scraper: BaseScraper[TRequest, TCollection, TResponse],
         requests: list[TRequest],
-    ) -> list[TResult]: ...
+    ) -> list[TResponse]: ...
 
     async def run_single(
         self,
-        scraper: BaseScraper[TRequest, TCollection, TResult],
+        scraper: BaseScraper[TRequest, TCollection, TResponse],
         request: TRequest,
-    ) -> TResult:
+    ) -> TResponse:
         results = await self.run(scraper, [request])
         return results[0]

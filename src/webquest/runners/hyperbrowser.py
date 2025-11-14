@@ -10,7 +10,7 @@ from webquest.base import BaseRunner, BaseScraper
 
 TRequest = TypeVar("TRequest", bound=BaseModel)
 TCollection = TypeVar("TCollection")
-TResult = TypeVar("TResult", bound=BaseModel)
+TResponse = TypeVar("TResponse", bound=BaseModel)
 
 
 class Settings(BaseSettings):
@@ -35,10 +35,9 @@ class Runner(BaseRunner):
     @override
     async def run(
         self,
-        scraper: BaseScraper[TRequest, TCollection, TResult],
+        scraper: BaseScraper[TRequest, TCollection, TResponse],
         requests: list[TRequest],
-    ) -> list[TResult]:
-        results: list[TResult] = []
+    ) -> list[TResponse]:
         session = await self._hyperbrowser_client.sessions.create()
         async with async_playwright() as p:
             browser = await p.chromium.connect_over_cdp(session.ws_endpoint)
@@ -48,8 +47,7 @@ class Runner(BaseRunner):
             )
         await self._hyperbrowser_client.sessions.stop(session.id)
 
-        for collection in collections:
-            result = await scraper.parse(collection)
-            results.append(result)
-
-        return results
+        responses = await asyncio.gather(
+            *[scraper.parse(collection) for collection in collections]
+        )
+        return responses

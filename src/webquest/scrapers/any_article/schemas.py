@@ -5,7 +5,7 @@ class Request(BaseModel):
     url: str
 
 
-class Result(BaseModel):
+class Response(BaseModel):
     publisher: str
     title: str
     published_at: str

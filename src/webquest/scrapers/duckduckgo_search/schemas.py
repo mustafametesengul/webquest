@@ -12,5 +12,5 @@ class Page(BaseModel):
     description: str
 
 
-class Result(BaseModel):
+class Response(BaseModel):
     pages: list[Page]

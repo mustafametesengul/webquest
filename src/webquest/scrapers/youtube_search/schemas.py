@@ -48,7 +48,7 @@ class Request(BaseModel):
     query: str
 
 
-class Result(BaseModel):
+class Response(BaseModel):
     videos: list[Video]
     channels: list[Channel]
     posts: list[Post]

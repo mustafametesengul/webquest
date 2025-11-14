@@ -9,11 +9,11 @@ from webquest.base import BaseScraper
 from webquest.scrapers.duckduckgo_search.schemas import (
     Page,
     Request,
-    Result,
+    Response,
 )
 
 
-class Scraper(BaseScraper[Request, str, Result]):
+class Scraper(BaseScraper[Request, str, Response]):
     @override
     async def collect(
         self,
@@ -39,7 +39,7 @@ class Scraper(BaseScraper[Request, str, Result]):
         return html
 
     @override
-    async def parse(self, collection: str) -> Result:
+    async def parse(self, collection: str) -> Response:
         soup = BeautifulSoup(collection, "html.parser")
         pages: list[Page] = []
 
@@ -76,4 +76,4 @@ class Scraper(BaseScraper[Request, str, Result]):
             )
             pages.append(page)
 
-        return Result(pages=pages)
+        return Response(pages=pages)

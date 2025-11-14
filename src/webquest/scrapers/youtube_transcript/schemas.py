@@ -1,9 +1,9 @@
 from pydantic import BaseModel
 
 
-class Request(BaseModel):
+class YouTubeTranscriptRequest(BaseModel):
     video_id: str
 
 
-class Response(BaseModel):
+class YouTubeTranscriptResponse(BaseModel):
     transcript: str

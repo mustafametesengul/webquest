@@ -3,11 +3,11 @@ from typing import override
 from openai import AsyncOpenAI
 from playwright.async_api import BrowserContext
 
-from webquest.scrapers.any_article.schemas import Request, Response
+from webquest.scrapers.any_article.schemas import AnyArticleRequest, AnyArticleResponse
 from webquest.scrapers.openai_parser import OpenAIParser, OpenAIParserSettings
 
 
-class Scraper(OpenAIParser[Request, Response]):
+class AnyArticle(OpenAIParser[AnyArticleRequest, AnyArticleResponse]):
     def __init__(
         self,
         openai: AsyncOpenAI | None = None,
@@ -15,7 +15,7 @@ class Scraper(OpenAIParser[Request, Response]):
         model: str = "gpt-5-mini",
     ) -> None:
         super().__init__(
-            response_type=Response,
+            response_type=AnyArticleResponse,
             openai=openai,
             settings=settings,
             model=model,
@@ -26,7 +26,7 @@ class Scraper(OpenAIParser[Request, Response]):
     async def fetch(
         self,
         context: BrowserContext,
-        request: Request,
+        request: AnyArticleRequest,
     ) -> str:
         page = await context.new_page()
         await page.goto(request.url, wait_until="domcontentloaded")

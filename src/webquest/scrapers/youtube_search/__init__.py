@@ -1,4 +1,7 @@
-from webquest.scrapers.youtube_search.schemas import Request, Response
-from webquest.scrapers.youtube_search.scraper import Scraper
+from webquest.scrapers.youtube_search.schemas import (
+    YouTubeSearchRequest,
+    YouTubeSearchResponse,
+)
+from webquest.scrapers.youtube_search.scraper import YouTubeSearch
 
-__all__ = ["Request", "Response", "Scraper"]
+__all__ = ["YouTubeSearchRequest", "YouTubeSearchResponse", "YouTubeSearch"]

@@ -1,11 +1,11 @@
 from pydantic import BaseModel
 
 
-class Request(BaseModel):
+class AnyArticleRequest(BaseModel):
     url: str
 
 
-class Response(BaseModel):
+class AnyArticleResponse(BaseModel):
     publisher: str
     title: str
     published_at: str

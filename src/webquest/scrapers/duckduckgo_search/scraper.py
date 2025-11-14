@@ -7,18 +7,20 @@ from playwright.async_api import BrowserContext
 
 from webquest.base_scraper import BaseScraper
 from webquest.scrapers.duckduckgo_search.schemas import (
+    DuckDuckGoSearchRequest,
+    DuckDuckGoSearchResponse,
     Page,
-    Request,
-    Response,
 )
 
 
-class Scraper(BaseScraper[Request, str, Response]):
+class DuckDuckGoSearch(
+    BaseScraper[DuckDuckGoSearchRequest, str, DuckDuckGoSearchResponse]
+):
     @override
     async def fetch(
         self,
         context: BrowserContext,
-        request: Request,
+        request: DuckDuckGoSearchRequest,
     ) -> str:
         url = f"https://duckduckgo.com/?origin=funnel_home_website&t=h_&q={quote_plus(request.query)}&ia=web"
         page = await context.new_page()
@@ -39,7 +41,7 @@ class Scraper(BaseScraper[Request, str, Response]):
         return html
 
     @override
-    async def parse(self, raw: str) -> Response:
+    async def parse(self, raw: str) -> DuckDuckGoSearchResponse:
         soup = BeautifulSoup(raw, "html.parser")
         pages: list[Page] = []
 
@@ -76,4 +78,4 @@ class Scraper(BaseScraper[Request, str, Response]):
             )
             pages.append(page)
 
-        return Response(pages=pages)
+        return DuckDuckGoSearchResponse(pages=pages)

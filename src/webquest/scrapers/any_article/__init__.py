@@ -1,4 +1,4 @@
-from webquest.scrapers.any_article.schemas import Request, Response
-from webquest.scrapers.any_article.scraper import Scraper
+from webquest.scrapers.any_article.schemas import AnyArticleRequest, AnyArticleResponse
+from webquest.scrapers.any_article.scraper import AnyArticle
 
-__all__ = ["Request", "Response", "Scraper"]
+__all__ = ["AnyArticleRequest", "AnyArticleResponse", "AnyArticle"]

@@ -8,14 +8,14 @@ from webquest.base_scraper import BaseScraper
 from webquest.scrapers.youtube_search.schemas import (
     Channel,
     Post,
-    Request,
-    Response,
     Short,
     Video,
+    YouTubeSearchRequest,
+    YouTubeSearchResponse,
 )
 
 
-class Scraper(BaseScraper[Request, str, Response]):
+class YouTubeSearch(BaseScraper[YouTubeSearchRequest, str, YouTubeSearchResponse]):
     def _parse_videos(self, soup: BeautifulSoup) -> list[Video]:
         videos: list[Video] = []
         video_tags = soup.find_all("ytd-video-renderer")
@@ -160,21 +160,25 @@ class Scraper(BaseScraper[Request, str, Response]):
         # Implementation for parsing shorts goes here
         return shorts
 
-    def _parse_search_results(self, soup: BeautifulSoup) -> Response:
+    def _parse_search_results(self, soup: BeautifulSoup) -> YouTubeSearchResponse:
         videos = self._parse_videos(soup)
         channels = self._parse_channels(soup)
         posts = self._parse_posts(soup)
         shorts = self._parse_shorts(soup)
-        return Response(videos=videos, channels=channels, posts=posts, shorts=shorts)
+        return YouTubeSearchResponse(
+            videos=videos, channels=channels, posts=posts, shorts=shorts
+        )
 
     @override
-    async def parse(self, raw: str) -> Response:
+    async def parse(self, raw: str) -> YouTubeSearchResponse:
         soup = BeautifulSoup(raw, "html.parser")
         result = self._parse_search_results(soup)
         return result
 
     @override
-    async def fetch(self, context: BrowserContext, request: Request) -> str:
+    async def fetch(
+        self, context: BrowserContext, request: YouTubeSearchRequest
+    ) -> str:
         url = (
             f"https://www.youtube.com/results?search_query={quote_plus(request.query)}"
         )

@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 
-class Request(BaseModel):
+class DuckDuckGoSearchRequest(BaseModel):
     query: str
 
 
@@ -12,5 +12,5 @@ class Page(BaseModel):
     description: str
 
 
-class Response(BaseModel):
+class DuckDuckGoSearchResponse(BaseModel):
     pages: list[Page]

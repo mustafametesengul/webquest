@@ -1,14 +1,15 @@
 import asyncio
 
-from webquest.runners.hyperbrowser import Hyperbrowser
-from webquest.scrapers.youtube_transcript import Request, Scraper
+from webquest.runners import Hyperbrowser
+from webquest.scrapers import YouTubeTranscript, YouTubeTranscriptRequest
 
 
 async def main() -> None:
     runner = Hyperbrowser()
+    scraper = YouTubeTranscript()
     response = await runner.run(
-        Scraper(),
-        Request(video_id="5OyWJeZ6ZrE"),
+        scraper,
+        YouTubeTranscriptRequest(video_id="5OyWJeZ6ZrE"),
     )
     print(response.model_dump_json(indent=4))
 

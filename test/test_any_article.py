@@ -1,14 +1,15 @@
 import asyncio
 
-from webquest.runners.hyperbrowser import Hyperbrowser
-from webquest.scrapers.any_article import Request, Scraper
+from webquest.runners import Hyperbrowser
+from webquest.scrapers import AnyArticle, AnyArticleRequest
 
 
 async def main() -> None:
     runner = Hyperbrowser()
+    scraper = AnyArticle()
     response = await runner.run(
-        Scraper(),
-        Request(url="https://www.bbc.com/news/articles/cy5qgy93w9go"),
+        scraper,
+        AnyArticleRequest(url="https://www.bbc.com/news/articles/cy5qgy93w9go"),
     )
     print(response.model_dump_json(indent=4))
 

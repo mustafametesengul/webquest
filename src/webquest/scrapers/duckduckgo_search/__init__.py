@@ -1,4 +1,7 @@
-from webquest.scrapers.duckduckgo_search.schemas import Request, Response
-from webquest.scrapers.duckduckgo_search.scraper import Scraper
+from webquest.scrapers.duckduckgo_search.schemas import (
+    DuckDuckGoSearchRequest,
+    DuckDuckGoSearchResponse,
+)
+from webquest.scrapers.duckduckgo_search.scraper import DuckDuckGoSearch
 
-__all__ = ["Request", "Response", "Scraper"]
+__all__ = ["DuckDuckGoSearchRequest", "DuckDuckGoSearchResponse", "DuckDuckGoSearch"]

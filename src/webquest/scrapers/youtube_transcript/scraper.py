@@ -5,15 +5,20 @@ from bs4 import BeautifulSoup
 from playwright.async_api import BrowserContext
 
 from webquest.base_scraper import BaseScraper
-from webquest.scrapers.youtube_transcript.schemas import Request, Response
+from webquest.scrapers.youtube_transcript.schemas import (
+    YouTubeTranscriptRequest,
+    YouTubeTranscriptResponse,
+)
 
 
-class Scraper(BaseScraper[Request, str, Response]):
+class YouTubeTranscript(
+    BaseScraper[YouTubeTranscriptRequest, str, YouTubeTranscriptResponse]
+):
     @override
     async def fetch(
         self,
         context: BrowserContext,
-        request: Request,
+        request: YouTubeTranscriptRequest,
     ) -> str:
         video_url = f"https://www.youtube.com/watch?v={request.video_id}"
 
@@ -54,7 +59,7 @@ class Scraper(BaseScraper[Request, str, Response]):
         return html
 
     @override
-    async def parse(self, raw: str) -> Response:
+    async def parse(self, raw: str) -> YouTubeTranscriptResponse:
         soup = BeautifulSoup(raw, "html.parser")
 
         # Find the transcript segment list renderer
@@ -80,6 +85,6 @@ class Scraper(BaseScraper[Request, str, Response]):
                 transcript_segments.append(text_element.get_text())
 
         formatted_transcript = " ".join(transcript_segments).strip()
-        result = Response(transcript=formatted_transcript)
+        result = YouTubeTranscriptResponse(transcript=formatted_transcript)
 
         return result

@@ -1,16 +1,17 @@
 import asyncio
 
-from webquest.runners.hyperbrowser import Hyperbrowser
-from webquest.scrapers.youtube_search import Request, Scraper
+from webquest.runners import Hyperbrowser
+from webquest.scrapers import YouTubeSearch, YouTubeSearchRequest
 
 
 async def main() -> None:
     runner = Hyperbrowser()
+    scraper = YouTubeSearch()
     responses = await runner.run_multiple(
-        Scraper(),
+        scraper,
         [
-            Request(query="H3 Podcast"),
-            Request(query="Moist Critical Gaming"),
+            YouTubeSearchRequest(query="H3 Podcast"),
+            YouTubeSearchRequest(query="Moist Critical Gaming"),
         ],
     )
     for response in responses:

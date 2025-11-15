@@ -4,7 +4,7 @@ from typing import override
 from bs4 import BeautifulSoup
 from playwright.async_api import BrowserContext
 
-from webquest.base_scraper import BaseScraper
+from webquest.base.base_scraper import BaseScraper
 from webquest.scrapers.youtube_transcript.schemas import (
     YouTubeTranscriptRequest,
     YouTubeTranscriptResponse,

@@ -13,7 +13,6 @@ from webquest.scrapers.google_news_search import (
     GoogleNewsSearchRequest,
     GoogleNewsSearchResponse,
 )
-from webquest.scrapers.openai_parser import OpenAIParser, OpenAIParserSettings
 from webquest.scrapers.youtube_search import (
     YouTubeSearch,
     YouTubeSearchRequest,
@@ -26,21 +25,19 @@ from webquest.scrapers.youtube_transcript import (
 )
 
 __all__ = [
-    "YouTubeTranscript",
-    "YouTubeTranscriptRequest",
-    "YouTubeTranscriptResponse",
-    "YouTubeSearch",
-    "YouTubeSearchRequest",
-    "YouTubeSearchResponse",
-    "OpenAIParser",
-    "OpenAIParserSettings",
-    "DuckDuckGoSearch",
-    "DuckDuckGoSearchRequest",
-    "DuckDuckGoSearchResponse",
     "AnyArticle",
     "AnyArticleRequest",
     "AnyArticleResponse",
+    "DuckDuckGoSearch",
+    "DuckDuckGoSearchRequest",
+    "DuckDuckGoSearchResponse",
     "GoogleNewsSearch",
     "GoogleNewsSearchRequest",
     "GoogleNewsSearchResponse",
+    "YouTubeSearch",
+    "YouTubeSearchRequest",
+    "YouTubeSearchResponse",
+    "YouTubeTranscript",
+    "YouTubeTranscriptRequest",
+    "YouTubeTranscriptResponse",
 ]

@@ -3,8 +3,8 @@ from typing import override
 from openai import AsyncOpenAI
 from playwright.async_api import BrowserContext
 
+from webquest.base.openai_parser import OpenAIParser, OpenAIParserSettings
 from webquest.scrapers.any_article.schemas import AnyArticleRequest, AnyArticleResponse
-from webquest.scrapers.openai_parser import OpenAIParser, OpenAIParserSettings
 
 
 class AnyArticle(OpenAIParser[AnyArticleRequest, AnyArticleResponse]):

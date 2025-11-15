@@ -4,7 +4,7 @@ from urllib.parse import quote_plus
 from bs4 import BeautifulSoup
 from playwright.async_api import BrowserContext
 
-from webquest.base_scraper import BaseScraper
+from webquest.base.base_scraper import BaseScraper
 from webquest.scrapers.youtube_search.schemas import (
     Channel,
     Post,

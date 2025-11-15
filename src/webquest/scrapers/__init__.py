@@ -8,7 +8,7 @@ from webquest.scrapers.duckduckgo_search import (
     DuckDuckGoSearchRequest,
     DuckDuckGoSearchResponse,
 )
-from webquest.scrapers.openai_parser import OpenAIParser
+from webquest.scrapers.openai_parser import OpenAIParser, OpenAIParserSettings
 from webquest.scrapers.youtube_search import (
     YouTubeSearch,
     YouTubeSearchRequest,
@@ -28,6 +28,7 @@ __all__ = [
     "YouTubeSearchRequest",
     "YouTubeSearchResponse",
     "OpenAIParser",
+    "OpenAIParserSettings",
     "DuckDuckGoSearch",
     "DuckDuckGoSearchRequest",
     "DuckDuckGoSearchResponse",

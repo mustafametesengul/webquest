@@ -21,10 +21,6 @@ class Channel(BaseModel):
     subscribers: str
 
 
-class ChannelVideosPage(BaseModel):
-    videos: list[Video]
-
-
 class Post(BaseModel):
     id: str
     url: str

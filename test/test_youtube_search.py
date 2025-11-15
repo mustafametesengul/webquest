@@ -7,15 +7,11 @@ from webquest.scrapers import YouTubeSearch, YouTubeSearchRequest
 async def main() -> None:
     runner = Hyperbrowser()
     scraper = YouTubeSearch()
-    responses = await runner.run_multiple(
+    response = await runner.run(
         scraper,
-        [
-            YouTubeSearchRequest(query="H3 Podcast"),
-            YouTubeSearchRequest(query="Moist Critical Gaming"),
-        ],
+        YouTubeSearchRequest(query="H3 Podcast"),
     )
-    for response in responses:
-        print(response.model_dump_json(indent=4))
+    print(response.model_dump_json(indent=4))
 
 
 if __name__ == "__main__":

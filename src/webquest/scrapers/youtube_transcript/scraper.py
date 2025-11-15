@@ -27,30 +27,19 @@ class YouTubeTranscript(
         await page.goto(video_url, wait_until="networkidle", timeout=30000)
         await asyncio.sleep(1)
 
-        # Try to expand description
-        try:
-            await page.wait_for_selector("div#description", timeout=10000)
-            await page.click("div#description")
-        except Exception:
-            pass
+        await page.wait_for_selector("div#description", timeout=10000)
+        await page.click("div#description")
 
         await asyncio.sleep(0.5)
 
-        # Click "Show transcript"
-        try:
-            transcript_button = await page.wait_for_selector(
-                'button[aria-label="Show transcript"]', timeout=10000
-            )
-            if not transcript_button:
-                raise Exception()
-        except Exception:
-            raise Exception(
-                "Transcript button not found — transcript may not be available"
-            )
+        transcript_button = await page.wait_for_selector(
+            'button[aria-label="Show transcript"]', timeout=10000
+        )
+        if not transcript_button:
+            raise Exception("Transcript button not found")
 
         await transcript_button.click()
 
-        # Wait for transcript
         await page.wait_for_selector(
             "ytd-transcript-segment-list-renderer", timeout=10000
         )

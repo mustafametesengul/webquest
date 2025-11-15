@@ -8,6 +8,11 @@ from webquest.scrapers.duckduckgo_search import (
     DuckDuckGoSearchRequest,
     DuckDuckGoSearchResponse,
 )
+from webquest.scrapers.google_news_search import (
+    GoogleNewsSearch,
+    GoogleNewsSearchRequest,
+    GoogleNewsSearchResponse,
+)
 from webquest.scrapers.openai_parser import OpenAIParser, OpenAIParserSettings
 from webquest.scrapers.youtube_search import (
     YouTubeSearch,
@@ -35,4 +40,7 @@ __all__ = [
     "AnyArticle",
     "AnyArticleRequest",
     "AnyArticleResponse",
+    "GoogleNewsSearch",
+    "GoogleNewsSearchRequest",
+    "GoogleNewsSearchResponse",
 ]

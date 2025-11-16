@@ -1,11 +1,12 @@
 import asyncio
-from typing import TypeVar
+from typing import TypeVar, override
 
 from hyperbrowser import AsyncHyperbrowser
 from playwright.async_api import async_playwright
 from pydantic import BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+from webquest.base.base_runner import BaseRunner
 from webquest.base.base_scraper import BaseScraper
 
 TRequest = TypeVar("TRequest", bound=BaseModel)
@@ -21,7 +22,7 @@ class Settings(BaseSettings):
     hyperbrowser_api_key: str | None = None
 
 
-class Hyperbrowser:
+class Hyperbrowser(BaseRunner):
     """Runner that uses Hyperbrowser to execute scrapers."""
 
     def __init__(
@@ -36,6 +37,7 @@ class Hyperbrowser:
             hyperbrowser_client = AsyncHyperbrowser(api_key=hyperbrowser_api_key)
         self._hyperbrowser_client = hyperbrowser_client
 
+    @override
     async def run_multiple(
         self,
         scraper: BaseScraper[TRequest, TRaw, TResponse],
@@ -54,11 +56,3 @@ class Hyperbrowser:
             *[scraper.parse(raw_item) for raw_item in raw_items]
         )
         return responses
-
-    async def run(
-        self,
-        scraper: BaseScraper[TRequest, TRaw, TResponse],
-        request: TRequest,
-    ) -> TResponse:
-        responses = await self.run_multiple(scraper, [request])
-        return responses[0]

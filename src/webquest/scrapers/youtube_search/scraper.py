@@ -16,6 +16,11 @@ from webquest.scrapers.youtube_search.schemas import (
 
 
 class YouTubeSearch(BaseScraper[YouTubeSearchRequest, str, YouTubeSearchResponse]):
+    """Scraper to perform a YouTube search and parse the results."""
+
+    Request = YouTubeSearchRequest
+    Response = YouTubeSearchResponse
+
     def _parse_videos(self, soup: BeautifulSoup) -> list[Video]:
         videos: list[Video] = []
         video_tags = soup.find_all("ytd-video-renderer")

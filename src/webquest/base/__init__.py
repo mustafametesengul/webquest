@@ -1,8 +1,4 @@
 from webquest.base.base_scraper import BaseScraper
-from webquest.base.openai_parser import OpenAIParser, OpenAIParserSettings
+from webquest.base.openai_parser import OpenAIParser
 
-__all__ = [
-    "BaseScraper",
-    "OpenAIParser",
-    "OpenAIParserSettings",
-]
+__all__ = ["BaseScraper", "OpenAIParser"]

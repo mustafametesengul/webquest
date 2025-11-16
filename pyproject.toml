@@ -1,6 +1,6 @@
 [project]
 name = "webquest"
-version = "0.2.0"
+version = "0.3.0"
 description = "WebQuest is an extensible Python toolkit for high-level web scraping, built around a generic Playwright-based scraper interface for quickly building, running, and reusing custom scrapers."
 readme = "README.md"
 requires-python = ">=3.12"

@@ -16,6 +16,11 @@ from webquest.scrapers.google_news_search.schemas import (
 class GoogleNewsSearch(
     BaseScraper[GoogleNewsSearchRequest, str, GoogleNewsSearchResponse]
 ):
+    """Scraper to perform a Google News search and parse the results."""
+
+    Request = GoogleNewsSearchRequest
+    Response = GoogleNewsSearchResponse
+
     @override
     async def fetch(
         self,

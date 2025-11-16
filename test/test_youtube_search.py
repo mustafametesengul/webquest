@@ -1,7 +1,7 @@
 import asyncio
 
 from webquest.runners import Hyperbrowser
-from webquest.scrapers import YouTubeSearch, YouTubeSearchRequest
+from webquest.scrapers import YouTubeSearch
 
 
 async def main() -> None:
@@ -9,7 +9,7 @@ async def main() -> None:
     scraper = YouTubeSearch()
     response = await runner.run(
         scraper,
-        YouTubeSearchRequest(query="H3 Podcast"),
+        scraper.Request(query="H3 Podcast"),
     )
     print(response.model_dump_json(indent=4))
 

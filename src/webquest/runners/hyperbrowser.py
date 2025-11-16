@@ -13,7 +13,7 @@ TRaw = TypeVar("TRaw")
 TResponse = TypeVar("TResponse", bound=BaseModel)
 
 
-class HyperbrowserSettings(BaseSettings):
+class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env",
         extra="ignore",
@@ -22,15 +22,19 @@ class HyperbrowserSettings(BaseSettings):
 
 
 class Hyperbrowser:
+    """Runner that uses Hyperbrowser to execute scrapers."""
+
     def __init__(
         self,
-        settings: HyperbrowserSettings | None = None,
+        hyperbrowser_api_key: str | None = None,
         hyperbrowser_client: AsyncHyperbrowser | None = None,
     ):
-        self._settings = settings or HyperbrowserSettings()
-        self._hyperbrowser_client = hyperbrowser_client or AsyncHyperbrowser(
-            api_key=self._settings.hyperbrowser_api_key,
-        )
+        settings = Settings()
+        if hyperbrowser_api_key is None:
+            hyperbrowser_api_key = settings.hyperbrowser_api_key
+        if hyperbrowser_client is None:
+            hyperbrowser_client = AsyncHyperbrowser(api_key=hyperbrowser_api_key)
+        self._hyperbrowser_client = hyperbrowser_client
 
     async def run_multiple(
         self,

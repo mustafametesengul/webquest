@@ -14,6 +14,11 @@ from webquest.scrapers.youtube_transcript.schemas import (
 class YouTubeTranscript(
     BaseScraper[YouTubeTranscriptRequest, str, YouTubeTranscriptResponse]
 ):
+    """Scraper to extract the transcript of a YouTube video."""
+
+    Request = YouTubeTranscriptRequest
+    Response = YouTubeTranscriptResponse
+
     @override
     async def fetch(
         self,

@@ -36,7 +36,7 @@ Example usage of the DuckDuckGo Search scraper:
 import asyncio
 
 from webquest.runners import Hyperbrowser
-from webquest.scrapers import DuckDuckGoSearch, DuckDuckGoSearchRequest
+from webquest.scrapers import DuckDuckGoSearch
 
 
 async def main() -> None:
@@ -44,7 +44,7 @@ async def main() -> None:
     scraper = DuckDuckGoSearch()
     response = await runner.run(
         scraper,
-        DuckDuckGoSearchRequest(query="Pizza Toppings"),
+        scraper.Request(query="Pizza Toppings"),
     )
     print(response.model_dump_json(indent=4))
 
@@ -61,7 +61,7 @@ You can also run multiple requests at the same time:
 import asyncio
 
 from webquest.runners import Hyperbrowser
-from webquest.scrapers import DuckDuckGoSearch, DuckDuckGoSearchRequest
+from webquest.scrapers import DuckDuckGoSearch
 
 
 async def main() -> None:
@@ -70,8 +70,8 @@ async def main() -> None:
     responses = await runner.run_multiple(
         scraper,
         [
-            DuckDuckGoSearchRequest(query="Pizza Toppings"),
-            DuckDuckGoSearchRequest(query="AI News"),
+            scraper.Request(query="Pizza Toppings"),
+            scraper.Request(query="AI News"),
         ],
     )
     for response in responses:

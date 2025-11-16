@@ -1,7 +1,7 @@
 import asyncio
 
 from webquest.runners import Hyperbrowser
-from webquest.scrapers import GoogleNewsSearch, GoogleNewsSearchRequest
+from webquest.scrapers import GoogleNewsSearch
 
 
 async def main() -> None:
@@ -9,7 +9,7 @@ async def main() -> None:
     scraper = GoogleNewsSearch()
     response = await runner.run(
         scraper,
-        GoogleNewsSearchRequest(query="H3 Podcast"),
+        scraper.Request(query="Artificial Intelligence"),
     )
     print(response.model_dump_json(indent=4))
 

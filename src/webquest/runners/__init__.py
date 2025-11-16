@@ -1,3 +1,3 @@
-from webquest.runners.hyperbrowser import Hyperbrowser, HyperbrowserSettings
+from webquest.runners.hyperbrowser import Hyperbrowser
 
-__all__ = ["Hyperbrowser", "HyperbrowserSettings"]
+__all__ = ["Hyperbrowser"]

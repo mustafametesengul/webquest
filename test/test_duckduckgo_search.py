@@ -1,7 +1,7 @@
 import asyncio
 
 from webquest.runners import Hyperbrowser
-from webquest.scrapers import DuckDuckGoSearch, DuckDuckGoSearchRequest
+from webquest.scrapers import DuckDuckGoSearch
 
 
 async def main() -> None:
@@ -10,8 +10,8 @@ async def main() -> None:
     responses = await runner.run_multiple(
         scraper,
         [
-            DuckDuckGoSearchRequest(query="H3 Podcast"),
-            DuckDuckGoSearchRequest(query="Moist Critical Gaming"),
+            scraper.Request(query="H3 Podcast"),
+            scraper.Request(query="Moist Critical Gaming"),
         ],
     )
     for response in responses:

@@ -16,6 +16,11 @@ from webquest.scrapers.duckduckgo_search.schemas import (
 class DuckDuckGoSearch(
     BaseScraper[DuckDuckGoSearchRequest, str, DuckDuckGoSearchResponse]
 ):
+    """Scraper to perform a DuckDuckGo web search and parse the results."""
+
+    Request = DuckDuckGoSearchRequest
+    Response = DuckDuckGoSearchResponse
+
     @override
     async def fetch(
         self,

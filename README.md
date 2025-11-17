@@ -2,17 +2,17 @@
 
 WebQuest is an extensible Python toolkit for high-level web scraping, built around a generic Playwright-based scraper interface for quickly building, running, and reusing custom scrapers.
 
-Scrapers:
+**Scrapers**
 
-- Any Article
-- DuckDuckGo Search
-- Google News Search
-- YouTube Search
-- YouTube Transcript
+- **Any Article:** Extracts readable content from arbitrary web articles.
+- **DuckDuckGo Search:** General web search using DuckDuckGo.
+- **Google News Search:** News-focused search via Google News.
+- **YouTube Search:** Search YouTube videos, channels, posts, and shorts.
+- **YouTube Transcript:** Fetch transcripts for YouTube videos.
 
-Runners:
+**Runners**
 
-- Hyperbrowser
+- **Hyperbrowser:** Executes scraping tasks using Hyperbrowser.
 
 ## Installation
 
@@ -53,8 +53,6 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-> To use the Hyperbrowser runner, you need to set the `HYPERBROWSER_API_KEY` environment variable.
-
 You can also run multiple requests at the same time:
 
 ```python
@@ -81,3 +79,7 @@ async def main() -> None:
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+
+> To use the Hyperbrowser runner, you need to set the `HYPERBROWSER_API_KEY` environment variable.
+
+> To use the Any Article scraper, you need to set the `OPENAI_API_KEY` environment variable.

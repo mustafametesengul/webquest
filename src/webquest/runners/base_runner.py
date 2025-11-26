@@ -3,7 +3,7 @@ from typing import TypeVar
 
 from pydantic import BaseModel
 
-from webquest.base.base_scraper import BaseScraper
+from webquest.scrapers.base_scraper import BaseScraper
 
 TRequest = TypeVar("TRequest", bound=BaseModel)
 TRaw = TypeVar("TRaw")

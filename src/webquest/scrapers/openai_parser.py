@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from openai import AsyncOpenAI
 from pydantic import BaseModel
 
-from webquest.base.base_scraper import BaseScraper
+from webquest.scrapers.base_scraper import BaseScraper
 
 TRequest = TypeVar("TRequest", bound=BaseModel)
 TResponse = TypeVar("TResponse", bound=BaseModel)

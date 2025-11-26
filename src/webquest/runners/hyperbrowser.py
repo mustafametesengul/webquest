@@ -5,8 +5,8 @@ from hyperbrowser import AsyncHyperbrowser
 from playwright.async_api import async_playwright
 from pydantic import BaseModel
 
-from webquest.base.base_runner import BaseRunner
-from webquest.base.base_scraper import BaseScraper
+from webquest.runners.base_runner import BaseRunner
+from webquest.scrapers.base_scraper import BaseScraper
 
 TRequest = TypeVar("TRequest", bound=BaseModel)
 TRaw = TypeVar("TRaw")

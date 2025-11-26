@@ -15,16 +15,16 @@ class AnyArticle(OpenAIParser[AnyArticleRequest, AnyArticleResponse]):
 
     def __init__(
         self,
-        openai_api_key: str | None = None,
-        openai: AsyncOpenAI | None = None,
+        client: AsyncOpenAI | None = None,
         model: str = "gpt-5-mini",
+        character_limit: int = 4000,
     ) -> None:
         super().__init__(
             response_type=AnyArticleResponse,
-            openai_api_key=openai_api_key,
-            openai=openai,
+            client=client,
             model=model,
             input="Parse the following web page and extract the main article:\n\n",
+            character_limit=character_limit,
         )
 
     @override

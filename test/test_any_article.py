@@ -1,12 +1,17 @@
 import asyncio
 
+from dotenv import load_dotenv
+
 from webquest.runners import Hyperbrowser
 from webquest.scrapers import AnyArticle
 
 
 async def main() -> None:
+    load_dotenv()
+
     runner = Hyperbrowser()
     scraper = AnyArticle()
+
     response = await runner.run(
         scraper,
         scraper.Request(url="https://www.bbc.com/news/articles/cy5qgy93w9go"),

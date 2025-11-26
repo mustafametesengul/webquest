@@ -1,12 +1,17 @@
 import asyncio
 
+from dotenv import load_dotenv
+
 from webquest.runners import Hyperbrowser
 from webquest.scrapers import DuckDuckGoSearch
 
 
 async def main() -> None:
+    load_dotenv()
+
     runner = Hyperbrowser()
     scraper = DuckDuckGoSearch()
+
     responses = await runner.run_multiple(
         scraper,
         [

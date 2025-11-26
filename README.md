@@ -42,6 +42,7 @@ from webquest.scrapers import DuckDuckGoSearch
 async def main() -> None:
     runner = Hyperbrowser()
     scraper = DuckDuckGoSearch()
+
     response = await runner.run(
         scraper,
         scraper.Request(query="Pizza Toppings"),
@@ -65,6 +66,7 @@ from webquest.scrapers import DuckDuckGoSearch
 async def main() -> None:
     runner = Hyperbrowser()
     scraper = DuckDuckGoSearch()
+
     responses = await runner.run_multiple(
         scraper,
         [

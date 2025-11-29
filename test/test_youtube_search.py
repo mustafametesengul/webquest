@@ -2,19 +2,17 @@ import asyncio
 
 from dotenv import load_dotenv
 
-from webquest.runners import Hyperbrowser
+from webquest.browsers import Hyperbrowser
 from webquest.scrapers import YouTubeSearch
 
 
 async def main() -> None:
     load_dotenv()
 
-    runner = Hyperbrowser()
-    scraper = YouTubeSearch()
+    scraper = YouTubeSearch(browser=Hyperbrowser())
 
-    response = await runner.run(
-        scraper,
-        scraper.Request(query="H3 Podcast"),
+    response = await scraper.run(
+        scraper.request(query="H3 Podcast"),
     )
     print(response.model_dump_json(indent=4))
 

@@ -10,9 +10,9 @@ WebQuest is an extensible Python toolkit for high-level web scraping, built arou
 - **YouTube Search:** Search YouTube videos, channels, posts, and shorts.
 - **YouTube Transcript:** Fetch transcripts for YouTube videos.
 
-**Runners**
+**Browsers**
 
-- **Hyperbrowser:** Executes scraping tasks using Hyperbrowser.
+- **Hyperbrowser:** A cloud-based browser service for running Playwright scrapers without managing infrastructure.
 
 ## Installation
 
@@ -35,17 +35,15 @@ Example usage of the DuckDuckGo Search scraper:
 ```python
 import asyncio
 
-from webquest.runners import Hyperbrowser
+from webquest.browsers import Hyperbrowser
 from webquest.scrapers import DuckDuckGoSearch
 
 
 async def main() -> None:
-    runner = Hyperbrowser()
-    scraper = DuckDuckGoSearch()
+    scraper = DuckDuckGoSearch(browser=Hyperbrowser())
 
-    response = await runner.run(
-        scraper,
-        scraper.Request(query="Pizza Toppings"),
+    response = await scraper.run(
+        scraper.request(query="Pizza Toppings"),
     )
     print(response.model_dump_json(indent=4))
 
@@ -59,20 +57,16 @@ You can also run multiple requests at the same time:
 ```python
 import asyncio
 
-from webquest.runners import Hyperbrowser
+from webquest.browsers import Hyperbrowser
 from webquest.scrapers import DuckDuckGoSearch
 
 
 async def main() -> None:
-    runner = Hyperbrowser()
-    scraper = DuckDuckGoSearch()
+    scraper = DuckDuckGoSearch(browser=Hyperbrowser())
 
-    responses = await runner.run_multiple(
-        scraper,
-        [
-            scraper.Request(query="Pizza Toppings"),
-            scraper.Request(query="AI News"),
-        ],
+    responses = await scraper.run(
+        scraper.request(query="Pizza Toppings"),
+        scraper.request(query="AI News"),
     )
     for response in responses:
         print(response.model_dump_json(indent=4))

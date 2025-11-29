@@ -5,21 +5,19 @@ from urllib.parse import quote_plus
 from bs4 import BeautifulSoup
 from playwright.async_api import BrowserContext
 
-from webquest.scrapers.base_scraper import BaseScraper
 from webquest.scrapers.duckduckgo_search.schemas import (
     DuckDuckGoSearchRequest,
     DuckDuckGoSearchResponse,
     Page,
 )
+from webquest.scrapers.scraper import Scraper
 
 
-class DuckDuckGoSearch(
-    BaseScraper[DuckDuckGoSearchRequest, str, DuckDuckGoSearchResponse]
-):
+class DuckDuckGoSearch(Scraper[DuckDuckGoSearchRequest, str, DuckDuckGoSearchResponse]):
     """Scraper to perform a DuckDuckGo web search and parse the results."""
 
-    Request = DuckDuckGoSearchRequest
-    Response = DuckDuckGoSearchResponse
+    request = DuckDuckGoSearchRequest
+    response = DuckDuckGoSearchResponse
 
     @override
     async def fetch(

@@ -4,7 +4,7 @@ from typing import override
 from bs4 import BeautifulSoup
 from playwright.async_api import BrowserContext
 
-from webquest.scrapers.base_scraper import BaseScraper
+from webquest.scrapers.scraper import Scraper
 from webquest.scrapers.youtube_transcript.schemas import (
     YouTubeTranscriptRequest,
     YouTubeTranscriptResponse,
@@ -12,12 +12,12 @@ from webquest.scrapers.youtube_transcript.schemas import (
 
 
 class YouTubeTranscript(
-    BaseScraper[YouTubeTranscriptRequest, str, YouTubeTranscriptResponse]
+    Scraper[YouTubeTranscriptRequest, str, YouTubeTranscriptResponse]
 ):
     """Scraper to extract the transcript of a YouTube video."""
 
-    Request = YouTubeTranscriptRequest
-    Response = YouTubeTranscriptResponse
+    request = YouTubeTranscriptRequest
+    response = YouTubeTranscriptResponse
 
     @override
     async def fetch(

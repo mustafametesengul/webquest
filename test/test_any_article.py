@@ -2,19 +2,17 @@ import asyncio
 
 from dotenv import load_dotenv
 
-from webquest.runners import Hyperbrowser
+from webquest.browsers import Hyperbrowser
 from webquest.scrapers import AnyArticle
 
 
 async def main() -> None:
     load_dotenv()
 
-    runner = Hyperbrowser()
-    scraper = AnyArticle()
+    scraper = AnyArticle(browser=Hyperbrowser())
 
-    response = await runner.run(
-        scraper,
-        scraper.Request(url="https://www.bbc.com/news/articles/cy5qgy93w9go"),
+    response = await scraper.run(
+        scraper.request(url="https://www.bbc.com/news/articles/cy5qgy93w9go"),
     )
     print(response.model_dump_json(indent=4))
 

@@ -2,22 +2,18 @@ import asyncio
 
 from dotenv import load_dotenv
 
-from webquest.runners import Hyperbrowser
+from webquest.browsers import Hyperbrowser
 from webquest.scrapers import DuckDuckGoSearch
 
 
 async def main() -> None:
     load_dotenv()
 
-    runner = Hyperbrowser()
-    scraper = DuckDuckGoSearch()
+    scraper = DuckDuckGoSearch(browser=Hyperbrowser())
 
-    responses = await runner.run_multiple(
-        scraper,
-        [
-            scraper.Request(query="H3 Podcast"),
-            scraper.Request(query="Moist Critical Gaming"),
-        ],
+    responses = await scraper.run(
+        scraper.request(query="H3 Podcast"),
+        scraper.request(query="Moist Critical Gaming"),
     )
     for response in responses:
         print(response.model_dump_json(indent=4))

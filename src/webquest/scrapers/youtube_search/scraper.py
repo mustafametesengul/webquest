@@ -4,7 +4,7 @@ from urllib.parse import quote_plus
 from bs4 import BeautifulSoup
 from playwright.async_api import BrowserContext
 
-from webquest.scrapers.base_scraper import BaseScraper
+from webquest.scrapers.scraper import Scraper
 from webquest.scrapers.youtube_search.schemas import (
     Channel,
     Post,
@@ -15,11 +15,11 @@ from webquest.scrapers.youtube_search.schemas import (
 )
 
 
-class YouTubeSearch(BaseScraper[YouTubeSearchRequest, str, YouTubeSearchResponse]):
+class YouTubeSearch(Scraper[YouTubeSearchRequest, str, YouTubeSearchResponse]):
     """Scraper to perform a YouTube search and parse the results."""
 
-    Request = YouTubeSearchRequest
-    Response = YouTubeSearchResponse
+    request = YouTubeSearchRequest
+    response = YouTubeSearchResponse
 
     def _parse_videos(self, soup: BeautifulSoup) -> list[Video]:
         videos: list[Video] = []

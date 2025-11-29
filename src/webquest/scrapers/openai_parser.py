@@ -5,7 +5,8 @@ from bs4 import BeautifulSoup
 from openai import AsyncOpenAI
 from pydantic import BaseModel
 
-from webquest.scrapers.base_scraper import BaseScraper
+from webquest.browsers.browser import Browser
+from webquest.scrapers.scraper import Scraper
 
 TRequest = TypeVar("TRequest", bound=BaseModel)
 TResponse = TypeVar("TResponse", bound=BaseModel)
@@ -13,13 +14,14 @@ TResponse = TypeVar("TResponse", bound=BaseModel)
 
 class OpenAIParser(
     Generic[TRequest, TResponse],
-    BaseScraper[TRequest, str, TResponse],
+    Scraper[TRequest, str, TResponse],
     ABC,
 ):
     """Abstract base class for OpenAI-based parsers."""
 
     def __init__(
         self,
+        browser: Browser,
         response_type: Type[TResponse],
         client: AsyncOpenAI | None = None,
         model: str = "gpt-5-mini",
@@ -33,6 +35,7 @@ class OpenAIParser(
         self._model = model
         self._character_limit = character_limit
         self._input = input
+        super().__init__(browser=browser)
 
     @override
     async def parse(self, raw: str) -> TResponse:

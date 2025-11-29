@@ -5,21 +5,19 @@ from urllib.parse import quote_plus
 from bs4 import BeautifulSoup
 from playwright.async_api import BrowserContext
 
-from webquest.scrapers.base_scraper import BaseScraper
 from webquest.scrapers.google_news_search.schemas import (
     Article,
     GoogleNewsSearchRequest,
     GoogleNewsSearchResponse,
 )
+from webquest.scrapers.scraper import Scraper
 
 
-class GoogleNewsSearch(
-    BaseScraper[GoogleNewsSearchRequest, str, GoogleNewsSearchResponse]
-):
+class GoogleNewsSearch(Scraper[GoogleNewsSearchRequest, str, GoogleNewsSearchResponse]):
     """Scraper to perform a Google News search and parse the results."""
 
-    Request = GoogleNewsSearchRequest
-    Response = GoogleNewsSearchResponse
+    request = GoogleNewsSearchRequest
+    response = GoogleNewsSearchResponse
 
     @override
     async def fetch(

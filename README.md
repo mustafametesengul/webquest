@@ -79,3 +79,7 @@ if __name__ == "__main__":
 > To use the Hyperbrowser browser, you need to set the `HYPERBROWSER_API_KEY` environment variable.
 
 > To use the Any Article scraper, you need to set the `OPENAI_API_KEY` environment variable.
+
+## Disclaimer
+
+This tool is for educational and research purposes only. The developers of WebQuest are not responsible for any misuse of this tool. Scraping websites may violate their Terms of Service. Users are solely responsible for ensuring their activities comply with all applicable laws and website policies.

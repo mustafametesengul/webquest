@@ -40,7 +40,7 @@ class GoogleNewsSearch(Scraper[GoogleNewsSearchRequest, str, GoogleNewsSearchRes
         soup = BeautifulSoup(raw, "html.parser")
         articles: list[Article] = []
 
-        article_tags = soup.find_all("article")
+        article_tags = soup.find_all("c-wiz")
         for article_tag in article_tags:
             title_tag = article_tag.find("a", class_="JtKRv")
             if not title_tag:

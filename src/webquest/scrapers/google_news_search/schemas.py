@@ -3,7 +3,6 @@ from pydantic import BaseModel
 
 class GoogleNewsSearchRequest(BaseModel):
     query: str
-    locale: str | None = None
 
 
 class Article(BaseModel):

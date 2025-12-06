@@ -19,7 +19,7 @@ class AnyArticle(OpenAIParser[AnyArticleRequest, AnyArticleResponse]):
         browser: Browser,
         client: AsyncOpenAI | None = None,
         model: str = "gpt-5-mini",
-        character_limit: int = 4000,
+        character_limit: int = 5000,
     ) -> None:
         super().__init__(
             browser=browser,

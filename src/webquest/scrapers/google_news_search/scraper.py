@@ -5,6 +5,7 @@ from urllib.parse import quote_plus
 from bs4 import BeautifulSoup
 from playwright.async_api import BrowserContext
 
+from webquest.browsers.browser import Browser
 from webquest.scrapers.google_news_search.schemas import (
     Article,
     GoogleNewsSearchRequest,
@@ -18,6 +19,16 @@ class GoogleNewsSearch(Scraper[GoogleNewsSearchRequest, str, GoogleNewsSearchRes
 
     request = GoogleNewsSearchRequest
     response = GoogleNewsSearchResponse
+
+    def __init__(
+        self,
+        browser: Browser,
+        result_limit: int = 10,
+        character_limit: int = 500,
+    ) -> None:
+        self._result_limit = result_limit
+        self._character_limit = character_limit
+        super().__init__(browser)
 
     @override
     async def fetch(
@@ -67,12 +78,14 @@ class GoogleNewsSearch(Scraper[GoogleNewsSearchRequest, str, GoogleNewsSearchRes
             published_at = published_at_tag.get_text().strip()
 
             article = Article(
-                site=site,
-                url=url,
-                title=title,
-                published_at=published_at,
+                site=site[: self._character_limit],
+                url=url[: self._character_limit],
+                title=title[: self._character_limit],
+                published_at=published_at[: self._character_limit],
             )
 
             articles.append(article)
+
+        articles = articles[: self._result_limit]
 
         return GoogleNewsSearchResponse(articles=articles)

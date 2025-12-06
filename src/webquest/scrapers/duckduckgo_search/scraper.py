@@ -5,6 +5,7 @@ from urllib.parse import quote_plus
 from bs4 import BeautifulSoup
 from playwright.async_api import BrowserContext
 
+from webquest.browsers.browser import Browser
 from webquest.scrapers.duckduckgo_search.schemas import (
     DuckDuckGoSearchRequest,
     DuckDuckGoSearchResponse,
@@ -18,6 +19,16 @@ class DuckDuckGoSearch(Scraper[DuckDuckGoSearchRequest, str, DuckDuckGoSearchRes
 
     request = DuckDuckGoSearchRequest
     response = DuckDuckGoSearchResponse
+
+    def __init__(
+        self,
+        browser: Browser,
+        result_limit: int = 10,
+        character_limit: int = 500,
+    ) -> None:
+        self._result_limit = result_limit
+        self._character_limit = character_limit
+        super().__init__(browser)
 
     @override
     async def fetch(
@@ -74,11 +85,13 @@ class DuckDuckGoSearch(Scraper[DuckDuckGoSearchRequest, str, DuckDuckGoSearchRes
             description = description_tag.get_text(strip=True)
 
             page = Page(
-                site=site,
-                url=url,
-                title=title,
-                description=description,
+                site=site[: self._character_limit],
+                url=url[: self._character_limit],
+                title=title[: self._character_limit],
+                description=description[: self._character_limit],
             )
             pages.append(page)
+
+        pages = pages[: self._result_limit]
 
         return DuckDuckGoSearchResponse(pages=pages)

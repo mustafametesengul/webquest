@@ -26,16 +26,15 @@ class OpenAIParser(
         client: AsyncOpenAI | None = None,
         model: str = "gpt-5-mini",
         input: str = "Parse the following web content:\n",
-        character_limit: int = 20000,
+        character_limit: int = 5000,
     ) -> None:
         self._response_type = response_type
-        if client is None:
-            client = AsyncOpenAI()
+        client = client or AsyncOpenAI()
         self._client = client
         self._model = model
         self._character_limit = character_limit
         self._input = input
-        super().__init__(browser=browser)
+        super().__init__(browser)
 
     @override
     async def parse(self, raw: str) -> TResponse:

@@ -26,8 +26,7 @@ class Hyperbrowser(Browser):
             client (AsyncHyperbrowser | None): An optional AsyncHyperbrowser client.
                 If not provided, a new client will be created.
         """
-        if client is None:
-            client = AsyncHyperbrowser()
+        client = client or AsyncHyperbrowser()
         self._client = client
 
     @override

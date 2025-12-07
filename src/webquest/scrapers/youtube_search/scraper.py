@@ -20,8 +20,8 @@ class YouTubeSearch(
     Scraper[
         YouTubeSearchSettings,
         YouTubeSearchRequest,
-        str,
         YouTubeSearchResponse,
+        str,
     ]
 ):
     """Scraper to perform a YouTube search and parse the results."""

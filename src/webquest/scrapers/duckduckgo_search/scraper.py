@@ -22,8 +22,8 @@ class DuckDuckGoSearch(
     Scraper[
         DuckDuckGoSearchSettings,
         DuckDuckGoSearchRequest,
-        str,
         DuckDuckGoSearchResponse,
+        str,
     ]
 ):
     """Scraper to perform a DuckDuckGo web search and parse the results."""

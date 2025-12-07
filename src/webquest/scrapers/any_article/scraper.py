@@ -15,8 +15,8 @@ class AnyArticle(
     Scraper[
         AnyArticleSettings,
         AnyArticleRequest,
-        str,
         AnyArticleResponse,
+        str,
     ]
 ):
     """Scraper to extract the main article from any web page using OpenAI."""

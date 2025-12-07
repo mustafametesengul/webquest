@@ -22,8 +22,8 @@ class GoogleNewsSearch(
     Scraper[
         GoogleNewsSearchSettings,
         GoogleNewsSearchRequest,
-        str,
         GoogleNewsSearchResponse,
+        str,
     ]
 ):
     """Scraper to perform a Google News search and parse the results."""

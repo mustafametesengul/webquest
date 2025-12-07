@@ -18,8 +18,8 @@ class YouTubeTranscript(
     Scraper[
         YouTubeTranscriptSettings,
         YouTubeTranscriptRequest,
-        str,
         YouTubeTranscriptResponse,
+        str,
     ]
 ):
     """Scraper to extract the transcript of a YouTube video."""

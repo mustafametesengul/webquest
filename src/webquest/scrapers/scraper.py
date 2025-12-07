@@ -10,11 +10,11 @@ from webquest.browsers.browser import Browser
 
 TSettings = TypeVar("TSettings", bound=BaseSettings)
 TRequest = TypeVar("TRequest", bound=BaseModel)
-TRaw = TypeVar("TRaw")
 TResponse = TypeVar("TResponse", bound=BaseModel)
+TRaw = TypeVar("TRaw")
 
 
-class Scraper(ABC, Generic[TSettings, TRequest, TRaw, TResponse]):
+class Scraper(ABC, Generic[TSettings, TRequest, TResponse, TRaw]):
     """
     Abstract base class for web scrapers.
 
@@ -25,8 +25,8 @@ class Scraper(ABC, Generic[TSettings, TRequest, TRaw, TResponse]):
     Type Parameters:
         TSettings: The type of the settings object.
         TRequest: The type of the request object.
-        TRaw: The type of the raw data fetched from the browser.
         TResponse: The type of the parsed response object.
+        TRaw: The type of the raw data fetched from the browser.
     """
 
     settings_model: ClassVar[type[TSettings]]

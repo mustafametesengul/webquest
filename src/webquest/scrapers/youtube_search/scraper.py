@@ -283,10 +283,10 @@ class YouTubeSearch(
         return shorts
 
     def _parse_search_results(self, soup: BeautifulSoup) -> YouTubeSearchResponse:
-        videos = self._parse_videos(soup)[: self._settings.result_limit]
-        channels = self._parse_channels(soup)[: self._settings.result_limit]
-        posts = self._parse_posts(soup)[: self._settings.result_limit]
-        shorts = self._parse_shorts(soup)[: self._settings.result_limit]
+        videos = self._parse_videos(soup)
+        channels = self._parse_channels(soup)
+        posts = self._parse_posts(soup)
+        shorts = self._parse_shorts(soup)
         return YouTubeSearchResponse(
             videos=videos[: self._settings.result_limit],
             channels=channels[: self._settings.result_limit],

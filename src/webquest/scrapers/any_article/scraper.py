@@ -4,30 +4,40 @@ from openai import AsyncOpenAI
 from playwright.async_api import BrowserContext
 
 from webquest.browsers.browser import Browser
-from webquest.scrapers.any_article.schemas import AnyArticleRequest, AnyArticleResponse
-from webquest.scrapers.openai_parser import OpenAIParser
+from webquest.parsers.openai_parser import OpenAIParser
+from webquest.scrapers.any_article.request import AnyArticleRequest
+from webquest.scrapers.any_article.response import AnyArticleResponse
+from webquest.scrapers.any_article.settings import AnyArticleSettings
+from webquest.scrapers.scraper import Scraper
 
 
-class AnyArticle(OpenAIParser[AnyArticleRequest, AnyArticleResponse]):
+class AnyArticle(
+    Scraper[
+        AnyArticleSettings,
+        AnyArticleRequest,
+        AnyArticleResponse,
+        str,
+    ]
+):
     """Scraper to extract the main article from any web page using OpenAI."""
 
-    request = AnyArticleRequest
-    response = AnyArticleResponse
+    settings_model = AnyArticleSettings
+    request_model = AnyArticleRequest
+    response_model = AnyArticleResponse
 
     def __init__(
         self,
         browser: Browser,
-        client: AsyncOpenAI | None = None,
-        model: str = "gpt-5-mini",
-        character_limit: int = 4000,
+        settings: AnyArticleSettings | None = None,
+        openai_client: AsyncOpenAI | None = None,
     ) -> None:
-        super().__init__(
-            browser=browser,
+        super().__init__(browser=browser, settings=settings)
+        self._parser = OpenAIParser[AnyArticleResponse](
             response_type=AnyArticleResponse,
-            client=client,
-            model=model,
+            client=openai_client,
+            model=self._settings.parser_model,
             input="Parse the following web page and extract the main article:\n\n",
-            character_limit=character_limit,
+            character_limit=self._settings.character_limit,
         )
 
     @override
@@ -41,3 +51,9 @@ class AnyArticle(OpenAIParser[AnyArticleRequest, AnyArticleResponse]):
         await page.wait_for_timeout(3000)
         html = await page.content()
         return html
+
+    @override
+    async def parse(self, raw: str) -> AnyArticleResponse:
+        response = await self._parser.parse(raw)
+        response.content = response.content[: self._settings.character_limit]
+        return response

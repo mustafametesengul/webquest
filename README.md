@@ -43,7 +43,7 @@ async def main() -> None:
     scraper = DuckDuckGoSearch(browser=Hyperbrowser())
 
     response = await scraper.run(
-        scraper.request(query="Pizza Toppings"),
+        scraper.request_model(query="Pizza Toppings"),
     )
     print(response.model_dump_json(indent=4))
 
@@ -65,8 +65,8 @@ async def main() -> None:
     scraper = DuckDuckGoSearch(browser=Hyperbrowser())
 
     responses = await scraper.run(
-        scraper.request(query="Pizza Toppings"),
-        scraper.request(query="AI News"),
+        scraper.request_model(query="Pizza Toppings"),
+        scraper.request_model(query="AI News"),
     )
     for response in responses:
         print(response.model_dump_json(indent=4))

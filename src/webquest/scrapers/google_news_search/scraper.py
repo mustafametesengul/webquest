@@ -5,19 +5,32 @@ from urllib.parse import quote_plus
 from bs4 import BeautifulSoup
 from playwright.async_api import BrowserContext
 
-from webquest.scrapers.google_news_search.schemas import (
-    Article,
+from webquest.scrapers.google_news_search.request import (
     GoogleNewsSearchRequest,
+)
+from webquest.scrapers.google_news_search.response import (
+    Article,
     GoogleNewsSearchResponse,
+)
+from webquest.scrapers.google_news_search.settings import (
+    GoogleNewsSearchSettings,
 )
 from webquest.scrapers.scraper import Scraper
 
 
-class GoogleNewsSearch(Scraper[GoogleNewsSearchRequest, str, GoogleNewsSearchResponse]):
+class GoogleNewsSearch(
+    Scraper[
+        GoogleNewsSearchSettings,
+        GoogleNewsSearchRequest,
+        GoogleNewsSearchResponse,
+        str,
+    ]
+):
     """Scraper to perform a Google News search and parse the results."""
 
-    request = GoogleNewsSearchRequest
-    response = GoogleNewsSearchResponse
+    settings_model = GoogleNewsSearchSettings
+    request_model = GoogleNewsSearchRequest
+    response_model = GoogleNewsSearchResponse
 
     @override
     async def fetch(
@@ -67,12 +80,14 @@ class GoogleNewsSearch(Scraper[GoogleNewsSearchRequest, str, GoogleNewsSearchRes
             published_at = published_at_tag.get_text().strip()
 
             article = Article(
-                site=site,
-                url=url,
-                title=title,
-                published_at=published_at,
+                site=site[: self._settings.character_limit],
+                url=url[: self._settings.character_limit],
+                title=title[: self._settings.character_limit],
+                published_at=published_at[: self._settings.character_limit],
             )
 
             articles.append(article)
+
+        articles = articles[: self._settings.result_limit]
 
         return GoogleNewsSearchResponse(articles=articles)

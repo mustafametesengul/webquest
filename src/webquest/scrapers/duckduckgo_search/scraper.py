@@ -5,19 +5,32 @@ from urllib.parse import quote_plus
 from bs4 import BeautifulSoup
 from playwright.async_api import BrowserContext
 
-from webquest.scrapers.duckduckgo_search.schemas import (
+from webquest.scrapers.duckduckgo_search.request import (
     DuckDuckGoSearchRequest,
+)
+from webquest.scrapers.duckduckgo_search.response import (
     DuckDuckGoSearchResponse,
     Page,
+)
+from webquest.scrapers.duckduckgo_search.settings import (
+    DuckDuckGoSearchSettings,
 )
 from webquest.scrapers.scraper import Scraper
 
 
-class DuckDuckGoSearch(Scraper[DuckDuckGoSearchRequest, str, DuckDuckGoSearchResponse]):
+class DuckDuckGoSearch(
+    Scraper[
+        DuckDuckGoSearchSettings,
+        DuckDuckGoSearchRequest,
+        DuckDuckGoSearchResponse,
+        str,
+    ]
+):
     """Scraper to perform a DuckDuckGo web search and parse the results."""
 
-    request = DuckDuckGoSearchRequest
-    response = DuckDuckGoSearchResponse
+    settings_model = DuckDuckGoSearchSettings
+    request_model = DuckDuckGoSearchRequest
+    response_model = DuckDuckGoSearchResponse
 
     @override
     async def fetch(
@@ -74,11 +87,13 @@ class DuckDuckGoSearch(Scraper[DuckDuckGoSearchRequest, str, DuckDuckGoSearchRes
             description = description_tag.get_text(strip=True)
 
             page = Page(
-                site=site,
-                url=url,
-                title=title,
-                description=description,
+                site=site[: self._settings.character_limit],
+                url=url[: self._settings.character_limit],
+                title=title[: self._settings.character_limit],
+                description=description[: self._settings.character_limit],
             )
             pages.append(page)
+
+        pages = pages[: self._settings.result_limit]
 
         return DuckDuckGoSearchResponse(pages=pages)

@@ -5,21 +5,30 @@ from bs4 import BeautifulSoup
 from playwright.async_api import BrowserContext
 
 from webquest.scrapers.scraper import Scraper
-from webquest.scrapers.youtube_search.schemas import (
+from webquest.scrapers.youtube_search.request import YouTubeSearchRequest
+from webquest.scrapers.youtube_search.response import (
     Channel,
     Post,
     Short,
     Video,
-    YouTubeSearchRequest,
     YouTubeSearchResponse,
 )
+from webquest.scrapers.youtube_search.settings import YouTubeSearchSettings
 
 
-class YouTubeSearch(Scraper[YouTubeSearchRequest, str, YouTubeSearchResponse]):
+class YouTubeSearch(
+    Scraper[
+        YouTubeSearchSettings,
+        YouTubeSearchRequest,
+        YouTubeSearchResponse,
+        str,
+    ]
+):
     """Scraper to perform a YouTube search and parse the results."""
 
-    request = YouTubeSearchRequest
-    response = YouTubeSearchResponse
+    settings_model = YouTubeSearchSettings
+    request_model = YouTubeSearchRequest
+    response_model = YouTubeSearchResponse
 
     def _parse_videos(self, soup: BeautifulSoup) -> list[Video]:
         videos: list[Video] = []
@@ -85,14 +94,14 @@ class YouTubeSearch(Scraper[YouTubeSearchRequest, str, YouTubeSearchResponse]):
 
             video = Video(
                 id=video_id,
-                url=video_url,
-                title=title,
-                description=description,
-                published_at=published_at,
-                views=views,
-                channel_id=channel_id,
-                channel_url=channel_url,
-                channel_name=channel_name,
+                url=video_url[: self._settings.character_limit],
+                title=title[: self._settings.character_limit],
+                description=description[: self._settings.character_limit],
+                published_at=published_at[: self._settings.character_limit],
+                views=views[: self._settings.character_limit],
+                channel_id=channel_id[: self._settings.character_limit],
+                channel_url=channel_url[: self._settings.character_limit],
+                channel_name=channel_name[: self._settings.character_limit],
             )
             videos.append(video)
 
@@ -135,11 +144,13 @@ class YouTubeSearch(Scraper[YouTubeSearchRequest, str, YouTubeSearchResponse]):
             subscribers = subscribers_tag.get_text(strip=True)
 
             channel = Channel(
-                id=channel_id,
-                url=channel_url,
-                name=channel_name,
-                description=description,
-                subscribers=subscribers,
+                id=channel_id[: self._settings.character_limit],
+                url=channel_url[: self._settings.character_limit],
+                name=channel_name[: self._settings.character_limit],
+                description=description[: self._settings.character_limit]
+                if description
+                else None,
+                subscribers=subscribers[: self._settings.character_limit],
             )
             channels.append(channel)
         return channels
@@ -215,15 +226,15 @@ class YouTubeSearch(Scraper[YouTubeSearchRequest, str, YouTubeSearchResponse]):
             comments = comments_tag.get_text(strip=True)
 
             post = Post(
-                id=post_id,
-                url=post_url,
-                content=content,
-                published_at=published_at,
-                channel_id=channel_id,
-                channel_url=channel_url,
-                channel_name=channel_name,
-                comments=comments,
-                likes=likes,
+                id=post_id[: self._settings.character_limit],
+                url=post_url[: self._settings.character_limit],
+                content=content[: self._settings.character_limit],
+                published_at=published_at[: self._settings.character_limit],
+                channel_id=channel_id[: self._settings.character_limit],
+                channel_url=channel_url[: self._settings.character_limit],
+                channel_name=channel_name[: self._settings.character_limit],
+                comments=comments[: self._settings.character_limit],
+                likes=likes[: self._settings.character_limit],
             )
             posts.append(post)
 
@@ -263,10 +274,10 @@ class YouTubeSearch(Scraper[YouTubeSearchRequest, str, YouTubeSearchResponse]):
             short_url = f"https://www.youtube.com/shorts/{short_id}"
 
             short = Short(
-                id=short_id,
-                url=short_url,
-                title=title,
-                views=views,
+                id=short_id[: self._settings.character_limit],
+                url=short_url[: self._settings.character_limit],
+                title=title[: self._settings.character_limit],
+                views=views[: self._settings.character_limit],
             )
             shorts.append(short)
         return shorts
@@ -277,10 +288,10 @@ class YouTubeSearch(Scraper[YouTubeSearchRequest, str, YouTubeSearchResponse]):
         posts = self._parse_posts(soup)
         shorts = self._parse_shorts(soup)
         return YouTubeSearchResponse(
-            videos=videos,
-            channels=channels,
-            posts=posts,
-            shorts=shorts,
+            videos=videos[: self._settings.result_limit],
+            channels=channels[: self._settings.result_limit],
+            posts=posts[: self._settings.result_limit],
+            shorts=shorts[: self._settings.result_limit],
         )
 
     @override
@@ -291,7 +302,9 @@ class YouTubeSearch(Scraper[YouTubeSearchRequest, str, YouTubeSearchResponse]):
 
     @override
     async def fetch(
-        self, context: BrowserContext, request: YouTubeSearchRequest
+        self,
+        context: BrowserContext,
+        request: YouTubeSearchRequest,
     ) -> str:
         url = (
             f"https://www.youtube.com/results?search_query={quote_plus(request.query)}"

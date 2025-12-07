@@ -40,10 +40,6 @@ class Short(BaseModel):
     views: str
 
 
-class YouTubeSearchRequest(BaseModel):
-    query: str
-
-
 class YouTubeSearchResponse(BaseModel):
     videos: list[Video]
     channels: list[Channel]

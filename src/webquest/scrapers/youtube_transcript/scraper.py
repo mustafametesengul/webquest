@@ -5,19 +5,28 @@ from bs4 import BeautifulSoup
 from playwright.async_api import BrowserContext
 
 from webquest.scrapers.scraper import Scraper
-from webquest.scrapers.youtube_transcript.schemas import (
+from webquest.scrapers.youtube_transcript.request import (
     YouTubeTranscriptRequest,
+)
+from webquest.scrapers.youtube_transcript.response import (
     YouTubeTranscriptResponse,
 )
+from webquest.scrapers.youtube_transcript.settings import YouTubeTranscriptSettings
 
 
 class YouTubeTranscript(
-    Scraper[YouTubeTranscriptRequest, str, YouTubeTranscriptResponse]
+    Scraper[
+        YouTubeTranscriptSettings,
+        YouTubeTranscriptRequest,
+        YouTubeTranscriptResponse,
+        str,
+    ]
 ):
     """Scraper to extract the transcript of a YouTube video."""
 
-    request = YouTubeTranscriptRequest
-    response = YouTubeTranscriptResponse
+    settings_model = YouTubeTranscriptSettings
+    request_model = YouTubeTranscriptRequest
+    response_model = YouTubeTranscriptResponse
 
     @override
     async def fetch(
@@ -79,6 +88,9 @@ class YouTubeTranscript(
                 transcript_segments.append(text_element.get_text())
 
         formatted_transcript = " ".join(transcript_segments).strip()
-        result = YouTubeTranscriptResponse(transcript=formatted_transcript)
+
+        result = YouTubeTranscriptResponse(
+            transcript=formatted_transcript[: self._settings.character_limit],
+        )
 
         return result

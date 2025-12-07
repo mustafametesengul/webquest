@@ -1,6 +1,6 @@
 [project]
 name = "webquest"
-version = "0.7.4"
+version = "0.8.0"
 description = "WebQuest is an extensible Python toolkit for high-level web scraping, built around a generic Playwright-based scraper interface for quickly building, running, and reusing custom scrapers."
 readme = "README.md"
 requires-python = ">=3.12"
@@ -10,6 +10,8 @@ dependencies = [
     "openai>=2.6.0",
     "playwright>=1.55.0",
     "pydantic>=2.12.3",
+    "pydantic-settings>=2.12.0",
+    "python-dotenv>=1.2.1",
 ]
 
 [build-system]
@@ -21,7 +23,6 @@ dev = [
     "pytest>=8.4.2",
     "pytest-asyncio>=1.2.0",
     "pytest-mypy>=1.0.1",
-    "python-dotenv>=1.2.1",
     "ruff>=0.14.1",
 ]
 

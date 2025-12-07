@@ -12,7 +12,7 @@ async def main() -> None:
     scraper = YouTubeTranscript(browser=Hyperbrowser())
 
     response = await scraper.run(
-        scraper.request(video_id="5OyWJeZ6ZrE"),
+        scraper.request_model(video_id="5OyWJeZ6ZrE"),
     )
     print(response.model_dump_json(indent=4))
 

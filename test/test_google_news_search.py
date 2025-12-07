@@ -12,7 +12,7 @@ async def main() -> None:
     scraper = GoogleNewsSearch(browser=Hyperbrowser())
 
     response = await scraper.run(
-        scraper.request(query="Artificial Intelligence"),
+        scraper.request_model(query="Artificial Intelligence"),
     )
     print(response.model_dump_json(indent=4))
 

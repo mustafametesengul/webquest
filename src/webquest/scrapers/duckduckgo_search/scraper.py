@@ -5,30 +5,32 @@ from urllib.parse import quote_plus
 from bs4 import BeautifulSoup
 from playwright.async_api import BrowserContext
 
-from webquest.browsers.browser import Browser
-from webquest.scrapers.duckduckgo_search.schemas import (
+from webquest.scrapers.duckduckgo_search.request import (
     DuckDuckGoSearchRequest,
+)
+from webquest.scrapers.duckduckgo_search.response import (
     DuckDuckGoSearchResponse,
     Page,
+)
+from webquest.scrapers.duckduckgo_search.settings import (
+    DuckDuckGoSearchSettings,
 )
 from webquest.scrapers.scraper import Scraper
 
 
-class DuckDuckGoSearch(Scraper[DuckDuckGoSearchRequest, str, DuckDuckGoSearchResponse]):
+class DuckDuckGoSearch(
+    Scraper[
+        DuckDuckGoSearchSettings,
+        DuckDuckGoSearchRequest,
+        str,
+        DuckDuckGoSearchResponse,
+    ]
+):
     """Scraper to perform a DuckDuckGo web search and parse the results."""
 
-    request = DuckDuckGoSearchRequest
-    response = DuckDuckGoSearchResponse
-
-    def __init__(
-        self,
-        browser: Browser,
-        result_limit: int = 10,
-        character_limit: int = 500,
-    ) -> None:
-        self._result_limit = result_limit
-        self._character_limit = character_limit
-        super().__init__(browser)
+    settings_model = DuckDuckGoSearchSettings
+    request_model = DuckDuckGoSearchRequest
+    response_model = DuckDuckGoSearchResponse
 
     @override
     async def fetch(
@@ -85,13 +87,13 @@ class DuckDuckGoSearch(Scraper[DuckDuckGoSearchRequest, str, DuckDuckGoSearchRes
             description = description_tag.get_text(strip=True)
 
             page = Page(
-                site=site[: self._character_limit],
-                url=url[: self._character_limit],
-                title=title[: self._character_limit],
-                description=description[: self._character_limit],
+                site=site[: self._settings.character_limit],
+                url=url[: self._settings.character_limit],
+                title=title[: self._settings.character_limit],
+                description=description[: self._settings.character_limit],
             )
             pages.append(page)
 
-        pages = pages[: self._result_limit]
+        pages = pages[: self._settings.result_limit]
 
         return DuckDuckGoSearchResponse(pages=pages)

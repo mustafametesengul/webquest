@@ -12,7 +12,7 @@ async def main() -> None:
     scraper = AnyArticle(browser=Hyperbrowser())
 
     response = await scraper.run(
-        scraper.request(url="https://www.bbc.com/news/articles/cy5qgy93w9go"),
+        scraper.request_model(url="https://www.bbc.com/news/articles/cy5qgy93w9go"),
     )
     print(response.model_dump_json(indent=4))
 

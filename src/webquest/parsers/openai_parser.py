@@ -1,27 +1,17 @@
-from abc import ABC
-from typing import Generic, Type, TypeVar, override
+from typing import Generic, Type, TypeVar
 
 from bs4 import BeautifulSoup
 from openai import AsyncOpenAI
 from pydantic import BaseModel
 
-from webquest.browsers.browser import Browser
-from webquest.scrapers.scraper import Scraper
-
-TRequest = TypeVar("TRequest", bound=BaseModel)
 TResponse = TypeVar("TResponse", bound=BaseModel)
 
 
-class OpenAIParser(
-    Generic[TRequest, TResponse],
-    Scraper[TRequest, str, TResponse],
-    ABC,
-):
+class OpenAIParser(Generic[TResponse]):
     """Abstract base class for OpenAI-based parsers."""
 
     def __init__(
         self,
-        browser: Browser,
         response_type: Type[TResponse],
         client: AsyncOpenAI | None = None,
         model: str = "gpt-5-mini",
@@ -29,16 +19,13 @@ class OpenAIParser(
         character_limit: int = 5000,
     ) -> None:
         self._response_type = response_type
-        client = client or AsyncOpenAI()
-        self._client = client
+        self._client = client if client is not None else AsyncOpenAI()
         self._model = model
         self._character_limit = character_limit
         self._input = input
-        super().__init__(browser)
 
-    @override
-    async def parse(self, raw: str) -> TResponse:
-        soup = BeautifulSoup(raw, "html.parser")
+    async def parse(self, html: str) -> TResponse:
+        soup = BeautifulSoup(html, "html.parser")
         text = soup.get_text(separator="\n", strip=True)
 
         if len(text) > self._character_limit:

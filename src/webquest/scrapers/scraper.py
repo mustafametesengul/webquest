@@ -4,15 +4,17 @@ from typing import ClassVar, Generic, TypeVar, overload
 
 from playwright.async_api import BrowserContext
 from pydantic import BaseModel
+from pydantic_settings import BaseSettings
 
 from webquest.browsers.browser import Browser
 
+TSettings = TypeVar("TSettings", bound=BaseSettings)
 TRequest = TypeVar("TRequest", bound=BaseModel)
 TRaw = TypeVar("TRaw")
 TResponse = TypeVar("TResponse", bound=BaseModel)
 
 
-class Scraper(ABC, Generic[TRequest, TRaw, TResponse]):
+class Scraper(ABC, Generic[TSettings, TRequest, TRaw, TResponse]):
     """
     Abstract base class for web scrapers.
 
@@ -21,15 +23,17 @@ class Scraper(ABC, Generic[TRequest, TRaw, TResponse]):
     using a provided Browser instance.
 
     Type Parameters:
+        TSettings: The type of the settings object.
         TRequest: The type of the request object.
         TRaw: The type of the raw data fetched from the browser.
         TResponse: The type of the parsed response object.
     """
 
-    request: ClassVar[type[TRequest]]
-    response: ClassVar[type[TResponse]]
+    settings_model: ClassVar[type[TSettings]]
+    request_model: ClassVar[type[TRequest]]
+    response_model: ClassVar[type[TResponse]]
 
-    def __init__(self, browser: Browser) -> None:
+    def __init__(self, browser: Browser, settings: TSettings | None = None) -> None:
         """
         Initialize the Scraper.
 
@@ -37,6 +41,7 @@ class Scraper(ABC, Generic[TRequest, TRaw, TResponse]):
             browser (Browser): The browser instance to use for scraping.
         """
         self._browser = browser
+        self._settings = settings if settings is not None else self.settings_model()
 
     @abstractmethod
     async def fetch(self, context: BrowserContext, request: TRequest) -> TRaw:

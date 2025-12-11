@@ -1,14 +1,10 @@
 import asyncio
 
-from dotenv import load_dotenv
-
 from webquest.browsers import Hyperbrowser
 from webquest.scrapers import YouTubeTranscript
 
 
 async def main() -> None:
-    load_dotenv()
-
     scraper = YouTubeTranscript(browser=Hyperbrowser())
 
     response = await scraper.run(

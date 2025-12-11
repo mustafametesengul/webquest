@@ -32,8 +32,16 @@ class AnyArticle(
         openai_client: AsyncOpenAI | None = None,
     ) -> None:
         super().__init__(browser=browser, settings=settings)
+
+        openai_api_key = (
+            self._settings.openai_api_key.get_secret_value()
+            if self._settings.openai_api_key
+            else None
+        )
+
         self._parser = OpenAIParser[AnyArticleResponse](
             response_type=AnyArticleResponse,
+            openai_api_key=openai_api_key,
             client=openai_client,
             model=self._settings.parser_model,
             input="Parse the following web page and extract the main article:\n\n",

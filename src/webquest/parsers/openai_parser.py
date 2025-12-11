@@ -13,13 +13,16 @@ class OpenAIParser(Generic[TResponse]):
     def __init__(
         self,
         response_type: Type[TResponse],
-        client: AsyncOpenAI | None = None,
+        openai_api_key: str | None = None,
         model: str = "gpt-5-mini",
         input: str = "Parse the following web content:\n",
         character_limit: int = 5000,
+        client: AsyncOpenAI | None = None,
     ) -> None:
         self._response_type = response_type
-        self._client = client if client is not None else AsyncOpenAI()
+        if client is None:
+            client = AsyncOpenAI(api_key=openai_api_key)
+        self._client = client
         self._model = model
         self._character_limit = character_limit
         self._input = input

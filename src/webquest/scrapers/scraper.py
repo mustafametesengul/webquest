@@ -39,6 +39,7 @@ class Scraper(ABC, Generic[TSettings, TRequest, TResponse, TRaw]):
 
         Args:
             browser (Browser): The browser instance to use for scraping.
+            settings (TSettings | None): Optional settings for the scraper.
         """
         self._browser = browser
         self._settings = settings if settings is not None else self.settings_model()

@@ -1,6 +1,6 @@
-# Google News Search
+# YouTube Transcript
 
-::: webquest.scrapers.google_news_search.scraper.GoogleNewsSearch
+::: webquest.scrapers.youtube_transcript.scraper.YouTubeTranscript
     options:
       heading_level: 3
       show_source: true
@@ -9,7 +9,7 @@
 
 ## Request
 
-::: webquest.scrapers.google_news_search.request.GoogleNewsSearchRequest
+::: webquest.scrapers.youtube_transcript.request.YouTubeTranscriptRequest
     options:
       heading_level: 3
       show_source: true
@@ -18,23 +18,18 @@
 
 ## Response
 
-::: webquest.scrapers.google_news_search.response.GoogleNewsSearchResponse
+::: webquest.scrapers.youtube_transcript.response.YouTubeTranscriptResponse
     options:
       heading_level: 3
       show_source: true
       show_root_heading: true
       show_root_full_path: false
 
-::: webquest.scrapers.google_news_search.response.Article
-    options:
-      heading_level: 3
-      show_source: true
-      show_root_heading: true
-      show_root_full_path: false
+
 
 ## Settings
 
-::: webquest.scrapers.google_news_search.settings.GoogleNewsSearchSettings
+::: webquest.scrapers.youtube_transcript.settings.YouTubeTranscriptSettings
     options:
       heading_level: 3
       show_source: true

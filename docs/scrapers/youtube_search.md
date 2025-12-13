@@ -1,7 +1,5 @@
 # YouTube Search
 
-## Scraper
-
 ::: webquest.scrapers.youtube_search.scraper.YouTubeSearch
     options:
       heading_level: 3
@@ -27,14 +25,14 @@
       show_root_heading: true
       show_root_full_path: false
 
-::: webquest.scrapers.youtube_search.response.Channel
+::: webquest.scrapers.youtube_search.response.Video
     options:
       heading_level: 3
       show_source: true
       show_root_heading: true
       show_root_full_path: false
 
-::: webquest.scrapers.youtube_search.response.Video
+::: webquest.scrapers.youtube_search.response.Channel
     options:
       heading_level: 3
       show_source: true

@@ -1,31 +1,30 @@
 site_name: WebQuest
-
 theme:
   name: material
-
 markdown_extensions:
-  - pymdownx.highlight:
-      anchor_linenums: true
-      line_spans: __span
-      pygments_lang_class: true
-  - pymdownx.inlinehilite
-  - pymdownx.snippets
-  - pymdownx.superfences
-
+- pymdownx.highlight:
+    anchor_linenums: true
+    line_spans: __span
+    pygments_lang_class: true
+- pymdownx.inlinehilite
+- pymdownx.snippets
+- pymdownx.superfences
 nav:
-  - Home: index.md
-  - Scrapers:
-    - YouTube Search: scrapers/youtube_search.md
-    - Google News Search: scrapers/google_news_search.md
-
+- Home: index.md
+- Scrapers:
+  - Any Article: scrapers/any_article.md
+  - DuckDuckGo Search: scrapers/duckduckgo_search.md
+  - Google News Search: scrapers/google_news_search.md
+  - YouTube Search: scrapers/youtube_search.md
+  - YouTube Transcript: scrapers/youtube_transcript.md
 plugins:
-  - search
-  - mkdocstrings:
-      handlers:
-        python:
-          options:
-            docstring_style: google
-            show_source: false
-            show_signature_annotations: true
-            separate_signature: true
-            show_bases: false
+- search
+- mkdocstrings:
+    handlers:
+      python:
+        options:
+          docstring_style: google
+          show_source: false
+          show_signature_annotations: true
+          separate_signature: true
+          show_bases: false

@@ -1,6 +1,6 @@
-# Google News Search
+# DuckDuckGo Search
 
-::: webquest.scrapers.google_news_search.scraper.GoogleNewsSearch
+::: webquest.scrapers.duckduckgo_search.scraper.DuckDuckGoSearch
     options:
       heading_level: 3
       show_source: true
@@ -9,7 +9,7 @@
 
 ## Request
 
-::: webquest.scrapers.google_news_search.request.GoogleNewsSearchRequest
+::: webquest.scrapers.duckduckgo_search.request.DuckDuckGoSearchRequest
     options:
       heading_level: 3
       show_source: true
@@ -18,14 +18,14 @@
 
 ## Response
 
-::: webquest.scrapers.google_news_search.response.GoogleNewsSearchResponse
+::: webquest.scrapers.duckduckgo_search.response.DuckDuckGoSearchResponse
     options:
       heading_level: 3
       show_source: true
       show_root_heading: true
       show_root_full_path: false
 
-::: webquest.scrapers.google_news_search.response.Article
+::: webquest.scrapers.duckduckgo_search.response.Page
     options:
       heading_level: 3
       show_source: true
@@ -34,7 +34,7 @@
 
 ## Settings
 
-::: webquest.scrapers.google_news_search.settings.GoogleNewsSearchSettings
+::: webquest.scrapers.duckduckgo_search.settings.DuckDuckGoSearchSettings
     options:
       heading_level: 3
       show_source: true

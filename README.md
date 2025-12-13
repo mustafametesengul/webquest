@@ -30,6 +30,8 @@ uv add webquest
 
 ## Usage
 
+To use **Hyperbrowser**, you need to set the `HYPERBROWSER_API_KEY` environment variable.
+
 Example usage of the DuckDuckGo Search scraper:
 
 ```python
@@ -75,10 +77,6 @@ async def main() -> None:
 if __name__ == "__main__":
     asyncio.run(main())
 ```
-
-> To use the Hyperbrowser browser, you need to set the `HYPERBROWSER_API_KEY` environment variable.
-
-> To use the Any Article scraper, you need to set the `OPENAI_API_KEY` environment variable.
 
 ## Disclaimer
 

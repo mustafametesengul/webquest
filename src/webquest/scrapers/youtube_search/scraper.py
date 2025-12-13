@@ -24,7 +24,26 @@ class YouTubeSearch(
         str,
     ]
 ):
-    """Scraper to perform a YouTube search and parse the results."""
+    """
+    Scraper to perform a YouTube search and parse the results.
+
+    Examples:
+        ```python
+        import asyncio
+        from webquest.browsers import Hyperbrowser
+        from webquest.scrapers import YouTubeSearch
+
+        async def main():
+            scraper = YouTubeSearch(browser=Hyperbrowser())
+            response = await scraper.run(
+                scraper.request_model(query="Artificial Intelligence"),
+            )
+            print(response.model_dump_json(indent=4))
+
+        if __name__ == "__main__":
+            asyncio.run(main())
+        ```
+    """
 
     settings_model = YouTubeSearchSettings
     request_model = YouTubeSearchRequest

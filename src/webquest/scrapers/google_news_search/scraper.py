@@ -26,7 +26,26 @@ class GoogleNewsSearch(
         str,
     ]
 ):
-    """Scraper to perform a Google News search and parse the results."""
+    """
+    Scraper to perform a Google News search and parse the results.
+
+    Examples:
+        ```python
+        import asyncio
+        from webquest.browsers import Hyperbrowser
+        from webquest.scrapers import GoogleNewsSearch
+
+        async def main():
+            scraper = GoogleNewsSearch(browser=Hyperbrowser())
+            response = await scraper.run(
+                scraper.request_model(query="Artificial Intelligence"),
+            )
+            print(response.model_dump_json(indent=4))
+
+        if __name__ == "__main__":
+            asyncio.run(main())
+        ```
+    """
 
     settings_model = GoogleNewsSearchSettings
     request_model = GoogleNewsSearchRequest

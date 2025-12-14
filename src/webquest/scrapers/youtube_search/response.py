@@ -2,6 +2,10 @@ from pydantic import BaseModel
 
 
 class Video(BaseModel):
+    """
+    Represents a YouTube video.
+    """
+
     id: str
     url: str
     title: str
@@ -14,6 +18,10 @@ class Video(BaseModel):
 
 
 class Channel(BaseModel):
+    """
+    Represents a YouTube channel.
+    """
+
     id: str
     url: str
     name: str
@@ -22,6 +30,10 @@ class Channel(BaseModel):
 
 
 class Post(BaseModel):
+    """
+    Represents a YouTube community post.
+    """
+
     id: str
     url: str
     content: str
@@ -34,6 +46,10 @@ class Post(BaseModel):
 
 
 class Short(BaseModel):
+    """
+    Represents a YouTube Short.
+    """
+
     id: str
     url: str
     title: str
@@ -41,6 +57,10 @@ class Short(BaseModel):
 
 
 class YouTubeSearchResponse(BaseModel):
+    """
+    Represents the response from a YouTube search.
+    """
+
     videos: list[Video]
     channels: list[Channel]
     posts: list[Post]

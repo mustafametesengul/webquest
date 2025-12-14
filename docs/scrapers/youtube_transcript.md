@@ -7,6 +7,15 @@
       show_root_heading: true
       show_root_full_path: false
 
+## Settings
+
+::: webquest.scrapers.youtube_transcript.settings.YouTubeTranscriptSettings
+    options:
+      heading_level: 3
+      show_source: true
+      show_root_heading: true
+      show_root_full_path: false
+
 ## Request
 
 ::: webquest.scrapers.youtube_transcript.request.YouTubeTranscriptRequest
@@ -26,12 +35,3 @@
       show_root_full_path: false
 
 
-
-## Settings
-
-::: webquest.scrapers.youtube_transcript.settings.YouTubeTranscriptSettings
-    options:
-      heading_level: 3
-      show_source: true
-      show_root_heading: true
-      show_root_full_path: false

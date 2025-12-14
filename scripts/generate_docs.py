@@ -1,13 +1,20 @@
-import ast
+import importlib
+import inspect
+import pkgutil
+import sys
 from pathlib import Path
 
 import yaml
+from pydantic import BaseModel
+
+import webquest.browsers
+import webquest.scrapers
+from webquest.browsers.browser import Browser
+from webquest.scrapers.scraper import Scraper
 
 # Define paths
 PROJECT_ROOT = Path(__file__).parent.parent
-SCRAPERS_DIR = PROJECT_ROOT / "src" / "webquest" / "scrapers"
-BROWSERS_DIR = PROJECT_ROOT / "src" / "webquest" / "browsers"
-DOCS_DIR = PROJECT_ROOT / "docs" / "scrapers"
+DOCS_SCRAPERS_DIR = PROJECT_ROOT / "docs" / "scrapers"
 DOCS_BROWSERS_DIR = PROJECT_ROOT / "docs" / "browsers"
 MKDOCS_FILE = PROJECT_ROOT / "mkdocs.yaml"
 INDEX_FILE = PROJECT_ROOT / "docs" / "index.md"
@@ -15,7 +22,16 @@ INDEX_FILE = PROJECT_ROOT / "docs" / "index.md"
 # Template for the scraper documentation
 DOC_TEMPLATE = """# {title}
 
-::: webquest.scrapers.{module_name}.scraper.{class_name}
+::: {scraper_full_path}
+    options:
+      heading_level: 3
+      show_source: true
+      show_root_heading: true
+      show_root_full_path: false
+
+## Settings
+
+::: {settings_full_path}
     options:
       heading_level: 3
       show_source: true
@@ -24,7 +40,7 @@ DOC_TEMPLATE = """# {title}
 
 ## Request
 
-::: webquest.scrapers.{module_name}.request.{request_class}
+::: {request_full_path}
     options:
       heading_level: 3
       show_source: true
@@ -33,7 +49,7 @@ DOC_TEMPLATE = """# {title}
 
 ## Response
 
-::: webquest.scrapers.{module_name}.response.{response_class}
+::: {response_full_path}
     options:
       heading_level: 3
       show_source: true
@@ -41,20 +57,11 @@ DOC_TEMPLATE = """# {title}
       show_root_full_path: false
 
 {response_models}
-
-## Settings
-
-::: webquest.scrapers.{module_name}.settings.{settings_class}
-    options:
-      heading_level: 3
-      show_source: true
-      show_root_heading: true
-      show_root_full_path: false
 """
 
 BROWSER_DOC_TEMPLATE = """# {title}
 
-::: webquest.browsers.{module_name}.{class_name}
+::: {browser_full_path}
     options:
       heading_level: 3
       show_source: true
@@ -63,7 +70,7 @@ BROWSER_DOC_TEMPLATE = """# {title}
 
 ## Settings
 
-::: webquest.browsers.{module_name}.{settings_class}
+::: {settings_full_path}
     options:
       heading_level: 3
       show_source: true
@@ -71,7 +78,7 @@ BROWSER_DOC_TEMPLATE = """# {title}
       show_root_full_path: false
 """
 
-RESPONSE_MODEL_TEMPLATE = """::: webquest.scrapers.{module_name}.response.{model_name}
+RESPONSE_MODEL_TEMPLATE = """::: {model_full_path}
     options:
       heading_level: 3
       show_source: true
@@ -79,204 +86,162 @@ RESPONSE_MODEL_TEMPLATE = """::: webquest.scrapers.{module_name}.response.{model
       show_root_full_path: false"""
 
 
-def get_class_name(file_path: Path, base_class_name: str) -> str | None:
-    """Extracts the class name inheriting from a specific base class in a file using AST."""
-    if not file_path.exists():
-        return None
-
-    with open(file_path, "r", encoding="utf-8") as f:
-        try:
-            tree = ast.parse(f.read())
-        except SyntaxError:
-            return None
-
-    for node in ast.walk(tree):
-        if isinstance(node, ast.ClassDef):
-            for base in node.bases:
-                # Check for direct base class name
-                if isinstance(base, ast.Name) and base.id == base_class_name:
-                    return node.name
-                # Check for subscripted base class (e.g. Scraper[...])
-                elif isinstance(base, ast.Subscript):
+def find_subclasses(package, base_class):
+    """Recursively find all subclasses of base_class in the given package."""
+    found = []
+    if hasattr(package, "__path__"):
+        for _, name, _ in pkgutil.walk_packages(
+            package.__path__, package.__name__ + "."
+        ):
+            try:
+                module = importlib.import_module(name)
+                for _, obj in inspect.getmembers(module):
                     if (
-                        isinstance(base.value, ast.Name)
-                        and base.value.id == base_class_name
+                        inspect.isclass(obj)
+                        and issubclass(obj, base_class)
+                        and obj is not base_class
                     ):
-                        return node.name
-    return None
+                        # Check if the class is defined in this module (not imported)
+                        # Or if it's defined in a sub-module of the package we are scanning
+                        if obj.__module__.startswith(package.__name__):
+                            found.append(obj)
+            except Exception as e:
+                print(f"Error importing {name}: {e}")
+    return list(set(found))  # Deduplicate
 
 
-def get_response_models(file_path: Path, main_response_class: str) -> list[str]:
-    """Extracts all BaseModel classes from response.py except the main response class."""
-    if not file_path.exists():
-        return []
-
+def get_response_models(main_response_class: type[BaseModel]) -> list[type[BaseModel]]:
+    """Extracts all BaseModel classes defined in the same module as the main response class."""
+    module = sys.modules[main_response_class.__module__]
     models = []
-    with open(file_path, "r", encoding="utf-8") as f:
-        try:
-            tree = ast.parse(f.read())
-        except SyntaxError:
-            return []
-
-    for node in ast.walk(tree):
-        if isinstance(node, ast.ClassDef):
-            is_model = False
-            for base in node.bases:
-                if isinstance(base, ast.Name) and base.id == "BaseModel":
-                    is_model = True
-                    break
-
-            if is_model and node.name != main_response_class:
-                models.append(node.name)
+    for _, obj in inspect.getmembers(module):
+        if (
+            inspect.isclass(obj)
+            and issubclass(obj, BaseModel)
+            and obj is not main_response_class
+            and obj.__module__ == main_response_class.__module__
+        ):
+            models.append(obj)
     return models
 
 
-def get_main_response_class(file_path: Path) -> str | None:
-    """Finds the class that likely represents the main response."""
-    if not file_path.exists():
-        return None
-
-    with open(file_path, "r", encoding="utf-8") as f:
-        try:
-            tree = ast.parse(f.read())
-        except SyntaxError:
-            return None
-
-    # First pass: look for a class ending in "Response"
-    for node in ast.walk(tree):
-        if isinstance(node, ast.ClassDef) and node.name.endswith("Response"):
-            return node.name
-
-    # Fallback: return the first BaseModel
-    for node in ast.walk(tree):
-        if isinstance(node, ast.ClassDef):
-            for base in node.bases:
-                if isinstance(base, ast.Name) and base.id == "BaseModel":
-                    return node.name
-    return None
+def get_full_path(cls):
+    return f"{cls.__module__}.{cls.__name__}"
 
 
 def generate_docs():
     """Generates documentation for all scrapers and browsers."""
 
     # Ensure docs directories exist
-    DOCS_DIR.mkdir(parents=True, exist_ok=True)
+    DOCS_SCRAPERS_DIR.mkdir(parents=True, exist_ok=True)
     DOCS_BROWSERS_DIR.mkdir(parents=True, exist_ok=True)
 
-    scrapers = []
-    browsers = []
+    scrapers_list = []
+    browsers_list = []
 
     # --- Scrapers ---
-    for item in SCRAPERS_DIR.iterdir():
-        if (
-            item.is_dir()
-            and (item / "scraper.py").exists()
-            and item.name != "__pycache__"
-        ):
-            module_name = item.name
-            title = (
-                module_name.replace("_", " ")
-                .title()
-                .replace("Youtube", "YouTube")
-                .replace("Duckduckgo", "DuckDuckGo")
-            )
+    print("Discovering scrapers...")
+    found_scrapers = find_subclasses(webquest.scrapers, Scraper)
 
-            print(f"Processing Scraper: {title} ({module_name})...")
+    for scraper_cls in found_scrapers:
+        # Determine module name for file naming (e.g. youtube_search)
+        # Assuming structure webquest.scrapers.<module_name>.scraper
+        parts = scraper_cls.__module__.split(".")
+        if "scrapers" in parts:
+            idx = parts.index("scrapers")
+            if idx + 1 < len(parts):
+                module_name = parts[idx + 1]
+            else:
+                # Fallback if directly in scrapers or weird structure
+                module_name = scraper_cls.__name__.lower()
+        else:
+            module_name = scraper_cls.__name__.lower()
 
-            # Extract class names
-            scraper_class = get_class_name(item / "scraper.py", "Scraper")
-            request_class = get_class_name(item / "request.py", "BaseModel")
+        title = (
+            module_name.replace("_", " ")
+            .title()
+            .replace("Youtube", "YouTube")
+            .replace("Duckduckgo", "DuckDuckGo")
+        )
 
-            # For request, sometimes it might be named differently or there might be multiple.
-            # Usually there is one main request model.
-            # Let's try to find one ending in Request if get_class_name returns the first one which might be wrong?
-            # Actually get_class_name returns the *first* match.
-            # Let's refine request finding too.
-            if not request_class:
-                # Try finding any class ending in Request
-                pass  # Logic inside get_class_name is simple.
+        print(f"Processing Scraper: {title} ({scraper_cls.__name__})...")
 
-            response_class = get_main_response_class(item / "response.py")
-            settings_class = get_class_name(item / "settings.py", "BaseSettings")
+        request_cls = scraper_cls.request_model
+        response_cls = scraper_cls.response_model
+        settings_cls = scraper_cls.settings_model
 
-            if not all([scraper_class, request_class, response_class, settings_class]):
-                print(
-                    f"Skipping {module_name}: Missing classes. Scraper: {scraper_class}, Req: {request_class}, Res: {response_class}, Set: {settings_class}"
-                )
-                continue
+        # Get other response models
+        other_models = get_response_models(response_cls)
+        response_models_str = "\n\n".join(
+            [
+                RESPONSE_MODEL_TEMPLATE.format(model_full_path=get_full_path(model))
+                for model in other_models
+            ]
+        )
 
-            # Get other response models
-            other_models = get_response_models(item / "response.py", response_class)
-            response_models_str = "\n\n".join(
-                [
-                    RESPONSE_MODEL_TEMPLATE.format(
-                        module_name=module_name, model_name=model
-                    )
-                    for model in other_models
-                ]
-            )
+        # Generate Markdown content
+        doc_content = DOC_TEMPLATE.format(
+            title=title,
+            scraper_full_path=get_full_path(scraper_cls),
+            request_full_path=get_full_path(request_cls),
+            response_full_path=get_full_path(response_cls),
+            settings_full_path=get_full_path(settings_cls),
+            response_models=response_models_str,
+        )
 
-            # Generate Markdown content
-            doc_content = DOC_TEMPLATE.format(
-                title=title,
-                module_name=module_name,
-                class_name=scraper_class,
-                request_class=request_class,
-                response_class=response_class,
-                settings_class=settings_class,
-                response_models=response_models_str,
-            )
+        # Write to file
+        doc_path = DOCS_SCRAPERS_DIR / f"{module_name}.md"
+        with open(doc_path, "w", encoding="utf-8") as f:
+            f.write(doc_content)
 
-            # Write to file
-            doc_path = DOCS_DIR / f"{module_name}.md"
-            with open(doc_path, "w", encoding="utf-8") as f:
-                f.write(doc_content)
-
-            scrapers.append({"name": title, "file": f"scrapers/{module_name}.md"})
-            print(f"Generated {doc_path}")
+        scrapers_list.append({"name": title, "file": f"scrapers/{module_name}.md"})
+        print(f"Generated {doc_path}")
 
     # --- Browsers ---
-    for item in BROWSERS_DIR.glob("*.py"):
-        if item.name in ["__init__.py", "browser.py"]:
-            continue
+    print("Discovering browsers...")
+    found_browsers = find_subclasses(webquest.browsers, Browser)
 
-        module_name = item.stem
+    for browser_cls in found_browsers:
+        # Determine module name
+        # Assuming structure webquest.browsers.<module_name>
+        parts = browser_cls.__module__.split(".")
+        if "browsers" in parts:
+            idx = parts.index("browsers")
+            if idx + 1 < len(parts):
+                module_name = parts[idx + 1]
+            else:
+                module_name = browser_cls.__name__.lower()
+        else:
+            module_name = browser_cls.__name__.lower()
+
         title = module_name.replace("_", " ").title()
 
-        print(f"Processing Browser: {title} ({module_name})...")
+        print(f"Processing Browser: {title} ({browser_cls.__name__})...")
 
-        browser_class = get_class_name(item, "Browser")
-        settings_class = get_class_name(item, "BaseSettings")
-
-        if not all([browser_class, settings_class]):
-            print(
-                f"Skipping {module_name}: Missing classes. Browser: {browser_class}, Settings: {settings_class}"
-            )
-            continue
+        settings_cls = browser_cls.settings_model
 
         doc_content = BROWSER_DOC_TEMPLATE.format(
             title=title,
-            module_name=module_name,
-            class_name=browser_class,
-            settings_class=settings_class,
+            browser_full_path=get_full_path(browser_cls),
+            settings_full_path=get_full_path(settings_cls),
         )
 
         doc_path = DOCS_BROWSERS_DIR / f"{module_name}.md"
         with open(doc_path, "w", encoding="utf-8") as f:
             f.write(doc_content)
 
-        browsers.append({"name": title, "file": f"browsers/{module_name}.md"})
+        browsers_list.append({"name": title, "file": f"browsers/{module_name}.md"})
         print(f"Generated {doc_path}")
 
     # Sort
-    scrapers.sort(key=lambda x: x["name"])
-    browsers.sort(key=lambda x: x["name"])
+    scrapers_list.sort(key=lambda x: x["name"])
+    browsers_list.sort(key=lambda x: x["name"])
 
     # Update mkdocs.yaml
-    update_mkdocs_nav(scrapers, browsers)
+    update_mkdocs_nav(scrapers_list, browsers_list)
 
     # Update index.md
-    update_index_md(scrapers, browsers)
+    update_index_md(scrapers_list, browsers_list)
 
 
 def update_mkdocs_nav(scrapers, browsers):

@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class YouTubeSearchRequest(BaseModel):
@@ -6,4 +6,4 @@ class YouTubeSearchRequest(BaseModel):
     Represents a request to search YouTube.
     """
 
-    query: str
+    query: str = Field(..., description="The search query.")

@@ -23,3 +23,9 @@ Run tests:
 ```bash
 uv run pytest
 ```
+
+Generate documentation:
+
+```bash
+uv run python scripts/generate_docs.py
+```

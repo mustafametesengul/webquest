@@ -1,5 +1,9 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class DuckDuckGoSearchRequest(BaseModel):
-    query: str
+    """
+    Represents a request to search DuckDuckGo.
+    """
+
+    query: str = Field(..., description="The search query.")

@@ -22,7 +22,27 @@ class YouTubeTranscript(
         str,
     ]
 ):
-    """Scraper to extract the transcript of a YouTube video."""
+    """
+    Scraper to extract the transcript of a YouTube video.
+
+    Example usage:
+
+    ```python
+    import asyncio
+    from webquest.browsers import Hyperbrowser
+    from webquest.scrapers import YouTubeTranscript
+
+    async def main():
+        scraper = YouTubeTranscript(browser=Hyperbrowser())
+        response = await scraper.run(
+            scraper.request_model(video_id="dQw4w9WgXcQ"),
+        )
+        print(response.model_dump_json(indent=4))
+
+    if __name__ == "__main__":
+        asyncio.run(main())
+    ```
+    """
 
     settings_model = YouTubeTranscriptSettings
     request_model = YouTubeTranscriptRequest

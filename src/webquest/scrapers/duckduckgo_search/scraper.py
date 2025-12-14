@@ -26,7 +26,27 @@ class DuckDuckGoSearch(
         str,
     ]
 ):
-    """Scraper to perform a DuckDuckGo web search and parse the results."""
+    """
+    Scraper to perform a DuckDuckGo web search and parse the results.
+
+    Example usage:
+
+    ```python
+    import asyncio
+    from webquest.browsers import Hyperbrowser
+    from webquest.scrapers import DuckDuckGoSearch
+
+    async def main():
+        scraper = DuckDuckGoSearch(browser=Hyperbrowser())
+        response = await scraper.run(
+            scraper.request_model(query="Python programming"),
+        )
+        print(response.model_dump_json(indent=4))
+
+    if __name__ == "__main__":
+        asyncio.run(main())
+    ```
+    """
 
     settings_model = DuckDuckGoSearchSettings
     request_model = DuckDuckGoSearchRequest

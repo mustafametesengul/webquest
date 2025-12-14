@@ -8,8 +8,8 @@ async def main() -> None:
     scraper = DuckDuckGoSearch(browser=Hyperbrowser())
 
     responses = await scraper.run(
-        scraper.request_model(query="H3 Podcast"),
-        scraper.request_model(query="Moist Critical Gaming"),
+        scraper.request_model(query="TLDR News"),
+        scraper.request_model(query="Lex Fridman"),
     )
     for response in responses:
         print(response.model_dump_json(indent=4))

@@ -2,10 +2,10 @@
 site_name = "WebQuest"
 site_description = "WebQuest is an extensible Python toolkit for high-level web scraping, built around a generic Playwright-based scraper interface for quickly building, running, and reusing custom scrapers."
 site_author = "Mete Sengul"
-site_url = "https://www.example.com/"
+site_url = "https://mustafametesengul.github.io/webquest/"
 repo_url = "https://github.com/mustafametesengul/webquest"
 copyright = """
-Copyright &copy; 2025 Mete Sengul
+Copyright &copy; 2026 Mete Sengul
 """
 
 [project.theme]

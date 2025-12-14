@@ -4,17 +4,25 @@ from typing import AsyncIterator, override
 
 from hyperbrowser import AsyncHyperbrowser
 from playwright.async_api import BrowserContext, async_playwright
-from pydantic import SecretStr
+from pydantic import Field, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from webquest.browsers.browser import Browser
 
 
 class HyperbrowserSettings(BaseSettings):
+    """
+    Configuration settings for the Hyperbrowser.
+    """
+
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
-    hyperbrowser_api_key: SecretStr | None = None
-    max_concurrent_sessions: int = 5
+    hyperbrowser_api_key: SecretStr | None = Field(
+        None, description="The API key for Hyperbrowser."
+    )
+    max_concurrent_sessions: int = Field(
+        5, description="The maximum number of concurrent sessions."
+    )
 
 
 class Hyperbrowser(Browser[HyperbrowserSettings]):
@@ -23,6 +31,24 @@ class Hyperbrowser(Browser[HyperbrowserSettings]):
 
     This class manages the creation and cleanup of Hyperbrowser sessions and provides
     a Playwright BrowserContext connected to the remote session.
+
+    Example usage:
+
+    ```python
+    import asyncio
+    from webquest.browsers import Hyperbrowser
+
+    async def main():
+        browser = Hyperbrowser()
+        async with browser.get_context() as context:
+            page = await context.new_page()
+            await page.goto("https://example.com")
+            print(await page.title())
+
+    if __name__ == "__main__":
+        asyncio.run(main())
+    ```
+
     """
 
     settings_model = HyperbrowserSettings

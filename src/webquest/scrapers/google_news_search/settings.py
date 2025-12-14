@@ -1,3 +1,4 @@
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -8,5 +9,9 @@ class GoogleNewsSearchSettings(BaseSettings):
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
-    result_limit: int = 10
-    character_limit: int = 1000
+    result_limit: int = Field(
+        10, description="The maximum number of results to return."
+    )
+    character_limit: int = Field(
+        1000, description="The maximum number of characters to parse."
+    )

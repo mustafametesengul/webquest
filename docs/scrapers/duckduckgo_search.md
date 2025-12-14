@@ -1,42 +1,45 @@
 # DuckDuckGo Search
 
-::: webquest.scrapers.duckduckgo_search.scraper.DuckDuckGoSearch
-    options:
-      heading_level: 3
-      show_source: true
-      show_root_heading: true
-      show_root_full_path: false
+Scraper to perform a DuckDuckGo web search and parse the results.
 
 ## Settings
 
-::: webquest.scrapers.duckduckgo_search.settings.DuckDuckGoSearchSettings
-    options:
-      heading_level: 3
-      show_source: true
-      show_root_heading: true
-      show_root_full_path: false
+### DuckDuckGoSearchSettings
+
+
+
+| Name | Type | Default | Description |
+|---|---|---|---|
+| `result_limit` | `int` | `10` |  |
+| `character_limit` | `int` | `1000` |  |
 
 ## Request
 
-::: webquest.scrapers.duckduckgo_search.request.DuckDuckGoSearchRequest
-    options:
-      heading_level: 3
-      show_source: true
-      show_root_heading: true
-      show_root_full_path: false
+### DuckDuckGoSearchRequest
+
+
+
+| Name | Type | Default | Description |
+|---|---|---|---|
+| `query` | `str` | **Required** |  |
 
 ## Response
 
-::: webquest.scrapers.duckduckgo_search.response.DuckDuckGoSearchResponse
-    options:
-      heading_level: 3
-      show_source: true
-      show_root_heading: true
-      show_root_full_path: false
+### DuckDuckGoSearchResponse
 
-::: webquest.scrapers.duckduckgo_search.response.Page
-    options:
-      heading_level: 3
-      show_source: true
-      show_root_heading: true
-      show_root_full_path: false
+
+
+| Name | Type | Default | Description |
+|---|---|---|---|
+| `pages` | `list[Page]` | **Required** |  |
+
+### Page
+
+
+
+| Name | Type | Default | Description |
+|---|---|---|---|
+| `site` | `str` | **Required** |  |
+| `url` | `str` | **Required** |  |
+| `title` | `str` | **Required** |  |
+| `description` | `str` | **Required** |  |

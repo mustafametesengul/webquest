@@ -1,37 +1,33 @@
 # YouTube Transcript
 
-::: webquest.scrapers.youtube_transcript.scraper.YouTubeTranscript
-    options:
-      heading_level: 3
-      show_source: true
-      show_root_heading: true
-      show_root_full_path: false
+Scraper to extract the transcript of a YouTube video.
 
 ## Settings
 
-::: webquest.scrapers.youtube_transcript.settings.YouTubeTranscriptSettings
-    options:
-      heading_level: 3
-      show_source: true
-      show_root_heading: true
-      show_root_full_path: false
+### YouTubeTranscriptSettings
+
+
+
+| Name | Type | Default | Description |
+|---|---|---|---|
+| `character_limit` | `int` | `5000` |  |
 
 ## Request
 
-::: webquest.scrapers.youtube_transcript.request.YouTubeTranscriptRequest
-    options:
-      heading_level: 3
-      show_source: true
-      show_root_heading: true
-      show_root_full_path: false
+### YouTubeTranscriptRequest
+
+
+
+| Name | Type | Default | Description |
+|---|---|---|---|
+| `video_id` | `str` | **Required** |  |
 
 ## Response
 
-::: webquest.scrapers.youtube_transcript.response.YouTubeTranscriptResponse
-    options:
-      heading_level: 3
-      show_source: true
-      show_root_heading: true
-      show_root_full_path: false
+### YouTubeTranscriptResponse
 
 
+
+| Name | Type | Default | Description |
+|---|---|---|---|
+| `transcript` | `str` | **Required** |  |

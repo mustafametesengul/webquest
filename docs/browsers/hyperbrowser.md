@@ -1,17 +1,17 @@
 # Hyperbrowser
 
-::: webquest.browsers.hyperbrowser.Hyperbrowser
-    options:
-      heading_level: 3
-      show_source: true
-      show_root_heading: true
-      show_root_full_path: false
+A Browser implementation that uses Hyperbrowser for remote browser sessions.
+
+This class manages the creation and cleanup of Hyperbrowser sessions and provides
+a Playwright BrowserContext connected to the remote session.
 
 ## Settings
 
-::: webquest.browsers.hyperbrowser.HyperbrowserSettings
-    options:
-      heading_level: 3
-      show_source: true
-      show_root_heading: true
-      show_root_full_path: false
+### HyperbrowserSettings
+
+
+
+| Name | Type | Default | Description |
+|---|---|---|---|
+| `hyperbrowser_api_key` | `SecretStr | None` | `None` |  |
+| `max_concurrent_sessions` | `int` | `5` |  |

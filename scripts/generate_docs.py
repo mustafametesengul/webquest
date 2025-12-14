@@ -1,11 +1,13 @@
 import importlib
 import inspect
 import pkgutil
+import re
 import sys
 from pathlib import Path
+from typing import Any
 
-import yaml
 from pydantic import BaseModel
+from pydantic_core import PydanticUndefined
 
 import webquest.browsers
 import webquest.scrapers
@@ -16,74 +18,7 @@ from webquest.scrapers.scraper import Scraper
 PROJECT_ROOT = Path(__file__).parent.parent
 DOCS_SCRAPERS_DIR = PROJECT_ROOT / "docs" / "scrapers"
 DOCS_BROWSERS_DIR = PROJECT_ROOT / "docs" / "browsers"
-MKDOCS_FILE = PROJECT_ROOT / "mkdocs.yaml"
 INDEX_FILE = PROJECT_ROOT / "docs" / "index.md"
-
-# Template for the scraper documentation
-DOC_TEMPLATE = """# {title}
-
-::: {scraper_full_path}
-    options:
-      heading_level: 3
-      show_source: true
-      show_root_heading: true
-      show_root_full_path: false
-
-## Settings
-
-::: {settings_full_path}
-    options:
-      heading_level: 3
-      show_source: true
-      show_root_heading: true
-      show_root_full_path: false
-
-## Request
-
-::: {request_full_path}
-    options:
-      heading_level: 3
-      show_source: true
-      show_root_heading: true
-      show_root_full_path: false
-
-## Response
-
-::: {response_full_path}
-    options:
-      heading_level: 3
-      show_source: true
-      show_root_heading: true
-      show_root_full_path: false
-
-{response_models}
-"""
-
-BROWSER_DOC_TEMPLATE = """# {title}
-
-::: {browser_full_path}
-    options:
-      heading_level: 3
-      show_source: true
-      show_root_heading: true
-      show_root_full_path: false
-
-## Settings
-
-::: {settings_full_path}
-    options:
-      heading_level: 3
-      show_source: true
-      show_root_heading: true
-      show_root_full_path: false
-"""
-
-RESPONSE_MODEL_TEMPLATE = """::: {model_full_path}
-    options:
-      heading_level: 3
-      show_source: true
-      show_root_heading: true
-      show_root_full_path: false"""
 
 
 def find_subclasses(package, base_class):
@@ -125,8 +60,58 @@ def get_response_models(main_response_class: type[BaseModel]) -> list[type[BaseM
     return models
 
 
-def get_full_path(cls):
-    return f"{cls.__module__}.{cls.__name__}"
+def format_type(annotation: Any) -> str:
+    """Formats a type annotation into a readable string."""
+    if annotation is None:
+        return "None"
+
+    type_str = str(annotation)
+    type_str = type_str.replace("typing.", "")
+    type_str = type_str.replace("<class '", "").replace("'>", "")
+
+    # Remove module paths
+    type_str = re.sub(r"(?:[\w]+\.)+([\w]+)", r"\1", type_str)
+
+    return type_str
+
+
+def model_to_markdown(model_cls: type[BaseModel], heading_level: int = 3) -> str:
+    """Generates Markdown documentation for a Pydantic model."""
+    if not issubclass(model_cls, BaseModel):
+        return ""
+
+    # Use __doc__ directly to avoid inheriting docstrings from BaseSettings/BaseModel
+    doc = model_cls.__doc__ or ""
+    if doc:
+        doc = inspect.cleandoc(doc)
+
+    lines = [f"{'#' * heading_level} {model_cls.__name__}", "", doc, ""]
+
+    fields = model_cls.model_fields
+    if not fields:
+        lines.append("_No fields_")
+        return "\n".join(lines)
+
+    lines.append("| Name | Type | Default | Description |")
+    lines.append("|---|---|---|---|")
+
+    for name, field in fields.items():
+        type_str = format_type(field.annotation)
+
+        if field.default == PydanticUndefined:
+            if field.default_factory:
+                default_str = "_Factory_"
+            else:
+                default_str = "**Required**"
+        else:
+            default_str = f"`{field.default}`"
+
+        description = field.description or ""
+        description = description.replace("\n", " ")
+
+        lines.append(f"| `{name}` | `{type_str}` | {default_str} | {description} |")
+
+    return "\n".join(lines)
 
 
 def generate_docs():
@@ -144,15 +129,12 @@ def generate_docs():
     found_scrapers = find_subclasses(webquest.scrapers, Scraper)
 
     for scraper_cls in found_scrapers:
-        # Determine module name for file naming (e.g. youtube_search)
-        # Assuming structure webquest.scrapers.<module_name>.scraper
         parts = scraper_cls.__module__.split(".")
         if "scrapers" in parts:
             idx = parts.index("scrapers")
             if idx + 1 < len(parts):
                 module_name = parts[idx + 1]
             else:
-                # Fallback if directly in scrapers or weird structure
                 module_name = scraper_cls.__name__.lower()
         else:
             module_name = scraper_cls.__name__.lower()
@@ -170,26 +152,37 @@ def generate_docs():
         response_cls = scraper_cls.response_model
         settings_cls = scraper_cls.settings_model
 
-        # Get other response models
+        scraper_doc = scraper_cls.__doc__ or ""
+        if scraper_doc:
+            scraper_doc = inspect.cleandoc(scraper_doc)
+
+        content_parts = [
+            f"# {title}",
+            "",
+            scraper_doc,
+            "",
+            "## Settings",
+            "",
+            model_to_markdown(settings_cls, heading_level=3),
+            "",
+            "## Request",
+            "",
+            model_to_markdown(request_cls, heading_level=3),
+            "",
+            "## Response",
+            "",
+            model_to_markdown(response_cls, heading_level=3),
+        ]
+
         other_models = get_response_models(response_cls)
-        response_models_str = "\n\n".join(
-            [
-                RESPONSE_MODEL_TEMPLATE.format(model_full_path=get_full_path(model))
-                for model in other_models
-            ]
-        )
+        if other_models:
+            content_parts.append("")
+            for model in other_models:
+                content_parts.append(model_to_markdown(model, heading_level=3))
+                content_parts.append("")
 
-        # Generate Markdown content
-        doc_content = DOC_TEMPLATE.format(
-            title=title,
-            scraper_full_path=get_full_path(scraper_cls),
-            request_full_path=get_full_path(request_cls),
-            response_full_path=get_full_path(response_cls),
-            settings_full_path=get_full_path(settings_cls),
-            response_models=response_models_str,
-        )
+        doc_content = "\n".join(content_parts)
 
-        # Write to file
         doc_path = DOCS_SCRAPERS_DIR / f"{module_name}.md"
         with open(doc_path, "w", encoding="utf-8") as f:
             f.write(doc_content)
@@ -202,8 +195,6 @@ def generate_docs():
     found_browsers = find_subclasses(webquest.browsers, Browser)
 
     for browser_cls in found_browsers:
-        # Determine module name
-        # Assuming structure webquest.browsers.<module_name>
         parts = browser_cls.__module__.split(".")
         if "browsers" in parts:
             idx = parts.index("browsers")
@@ -220,11 +211,21 @@ def generate_docs():
 
         settings_cls = browser_cls.settings_model
 
-        doc_content = BROWSER_DOC_TEMPLATE.format(
-            title=title,
-            browser_full_path=get_full_path(browser_cls),
-            settings_full_path=get_full_path(settings_cls),
-        )
+        browser_doc = browser_cls.__doc__ or ""
+        if browser_doc:
+            browser_doc = inspect.cleandoc(browser_doc)
+
+        content_parts = [
+            f"# {title}",
+            "",
+            browser_doc,
+            "",
+            "## Settings",
+            "",
+            model_to_markdown(settings_cls, heading_level=3),
+        ]
+
+        doc_content = "\n".join(content_parts)
 
         doc_path = DOCS_BROWSERS_DIR / f"{module_name}.md"
         with open(doc_path, "w", encoding="utf-8") as f:
@@ -237,43 +238,8 @@ def generate_docs():
     scrapers_list.sort(key=lambda x: x["name"])
     browsers_list.sort(key=lambda x: x["name"])
 
-    # Update mkdocs.yaml
-    update_mkdocs_nav(scrapers_list, browsers_list)
-
     # Update index.md
     update_index_md(scrapers_list, browsers_list)
-
-
-def update_mkdocs_nav(scrapers, browsers):
-    """Updates the nav section in mkdocs.yaml."""
-
-    with open(MKDOCS_FILE, "r", encoding="utf-8") as f:
-        mkdocs_config = yaml.safe_load(f)
-
-    # Find or create Scrapers and Browsers section in nav
-    nav = mkdocs_config.get("nav", [])
-
-    # Helper to update a section
-    def update_section(section_name, items):
-        found = False
-        new_list = [{item["name"]: item["file"]} for item in items]
-        for nav_item in nav:
-            if isinstance(nav_item, dict) and section_name in nav_item:
-                nav_item[section_name] = new_list
-                found = True
-                break
-        if not found:
-            nav.append({section_name: new_list})
-
-    update_section("Scrapers", scrapers)
-    update_section("Browsers", browsers)
-
-    mkdocs_config["nav"] = nav
-
-    with open(MKDOCS_FILE, "w", encoding="utf-8") as f:
-        yaml.dump(mkdocs_config, f, sort_keys=False, allow_unicode=True)
-
-    print("Updated mkdocs.yaml")
 
 
 def update_index_md(scrapers, browsers):
@@ -284,13 +250,6 @@ def update_index_md(scrapers, browsers):
 
     with open(INDEX_FILE, "r", encoding="utf-8") as f:
         content = f.read()
-
-    # We need to reconstruct the file content.
-    # Assuming the file starts with some intro, then has sections.
-    # Simplest way is to find where "## Scrapers" starts and cut off everything after, then rebuild.
-    # But now we have Browsers too.
-
-    # Let's look for the first section header we manage.
 
     base_content = content
     if "## Scrapers" in content:

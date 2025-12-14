@@ -1,37 +1,39 @@
 # Any Article
 
-::: webquest.scrapers.any_article.scraper.AnyArticle
-    options:
-      heading_level: 3
-      show_source: true
-      show_root_heading: true
-      show_root_full_path: false
+Scraper to extract the main article from any web page using OpenAI.
 
 ## Settings
 
-::: webquest.scrapers.any_article.settings.AnyArticleSettings
-    options:
-      heading_level: 3
-      show_source: true
-      show_root_heading: true
-      show_root_full_path: false
+### AnyArticleSettings
+
+
+
+| Name | Type | Default | Description |
+|---|---|---|---|
+| `character_limit` | `int` | `5000` |  |
+| `parser_model` | `str` | `gpt-5-mini` |  |
+| `openai_api_key` | `SecretStr | None` | `None` |  |
 
 ## Request
 
-::: webquest.scrapers.any_article.request.AnyArticleRequest
-    options:
-      heading_level: 3
-      show_source: true
-      show_root_heading: true
-      show_root_full_path: false
+### AnyArticleRequest
+
+
+
+| Name | Type | Default | Description |
+|---|---|---|---|
+| `url` | `str` | **Required** |  |
 
 ## Response
 
-::: webquest.scrapers.any_article.response.AnyArticleResponse
-    options:
-      heading_level: 3
-      show_source: true
-      show_root_heading: true
-      show_root_full_path: false
+### AnyArticleResponse
 
 
+
+| Name | Type | Default | Description |
+|---|---|---|---|
+| `publisher` | `str` | **Required** |  |
+| `title` | `str` | **Required** |  |
+| `published_at` | `str` | **Required** |  |
+| `authors` | `list[str]` | **Required** |  |
+| `content` | `str` | **Required** |  |

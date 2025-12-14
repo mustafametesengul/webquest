@@ -19,7 +19,27 @@ class AnyArticle(
         str,
     ]
 ):
-    """Scraper to extract the main article from any web page using OpenAI."""
+    """
+    Scraper to extract the main article from any web page using OpenAI.
+
+    Example usage:
+
+    ```python
+    import asyncio
+    from webquest.browsers import Hyperbrowser
+    from webquest.scrapers import AnyArticle
+
+    async def main():
+        scraper = AnyArticle(browser=Hyperbrowser())
+        response = await scraper.run(
+            scraper.request_model(url="https://example.com/article"),
+        )
+        print(response.model_dump_json(indent=4))
+
+    if __name__ == "__main__":
+        asyncio.run(main())
+    ```
+    """
 
     settings_model = AnyArticleSettings
     request_model = AnyArticleRequest

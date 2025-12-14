@@ -2,6 +2,10 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class DuckDuckGoSearchSettings(BaseSettings):
+    """
+    Configuration settings for the DuckDuckGo search scraper.
+    """
+
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     result_limit: int = 10

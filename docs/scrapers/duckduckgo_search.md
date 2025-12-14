@@ -2,11 +2,29 @@
 
 Scraper to perform a DuckDuckGo web search and parse the results.
 
+Example usage:
+
+```python
+import asyncio
+from webquest.browsers import Hyperbrowser
+from webquest.scrapers import DuckDuckGoSearch
+
+async def main():
+    scraper = DuckDuckGoSearch(browser=Hyperbrowser())
+    response = await scraper.run(
+        scraper.request_model(query="Python programming"),
+    )
+    print(response.model_dump_json(indent=4))
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
 ## Settings
 
 **DuckDuckGoSearchSettings**
 
-
+Configuration settings for the DuckDuckGo search scraper.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
@@ -17,7 +35,7 @@ Scraper to perform a DuckDuckGo web search and parse the results.
 
 **DuckDuckGoSearchRequest**
 
-
+Represents a request to search DuckDuckGo.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
@@ -27,7 +45,7 @@ Scraper to perform a DuckDuckGo web search and parse the results.
 
 **DuckDuckGoSearchResponse**
 
-
+Represents the response from a DuckDuckGo search.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
@@ -35,7 +53,7 @@ Scraper to perform a DuckDuckGo web search and parse the results.
 
 **Page**
 
-
+Represents a web page found in DuckDuckGo search results.
 
 | Name | Type | Default | Description |
 |---|---|---|---|

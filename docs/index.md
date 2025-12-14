@@ -8,15 +8,15 @@ WebQuest is an extensible Python toolkit for high-level web scraping, built arou
 
 **Scrapers**
 
-- **Any Article:** Extracts readable content from arbitrary web articles.
-- **DuckDuckGo Search:** General web search using DuckDuckGo.
-- **Google News Search:** News-focused search via Google News.
-- **YouTube Search:** Search YouTube videos, channels, posts, and shorts.
-- **YouTube Transcript:** Fetch transcripts for YouTube videos.
+- **[Any Article:](scrapers/any_article.md)** Extracts readable content from arbitrary web articles.
+- **[DuckDuckGo Search:](scrapers/duckduckgo_search.md)** General web search using DuckDuckGo.
+- **[Google News Search:](scrapers/google_news_search.md)** News-focused search via Google News.
+- **[YouTube Search:](scrapers/youtube_search.md)** Search YouTube videos, channels, posts, and shorts.
+- **[YouTube Transcript:](scrapers/youtube_transcript.md)** Fetch transcripts for YouTube videos.
 
 **Browsers**
 
-- **Hyperbrowser:** A cloud-based browser service for running Playwright scrapers without managing infrastructure.
+- **[Hyperbrowser:](browsers/hyperbrowser.md)** A cloud-based browser service for running Playwright scrapers without managing infrastructure.
 
 ## Installation
 

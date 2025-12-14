@@ -11,6 +11,10 @@ from webquest.browsers.browser import Browser
 
 
 class HyperbrowserSettings(BaseSettings):
+    """
+    Configuration settings for the Hyperbrowser.
+    """
+
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     hyperbrowser_api_key: SecretStr | None = None

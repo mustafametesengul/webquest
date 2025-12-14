@@ -2,6 +2,10 @@ from pydantic import BaseModel
 
 
 class Page(BaseModel):
+    """
+    Represents a web page found in DuckDuckGo search results.
+    """
+
     site: str
     url: str
     title: str
@@ -9,4 +13,8 @@ class Page(BaseModel):
 
 
 class DuckDuckGoSearchResponse(BaseModel):
+    """
+    Represents the response from a DuckDuckGo search.
+    """
+
     pages: list[Page]

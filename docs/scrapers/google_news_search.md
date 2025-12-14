@@ -2,22 +2,23 @@
 
 Scraper to perform a Google News search and parse the results.
 
-Examples:
-    ```python
-    import asyncio
-    from webquest.browsers import Hyperbrowser
-    from webquest.scrapers import GoogleNewsSearch
+Example usage:
 
-    async def main():
-        scraper = GoogleNewsSearch(browser=Hyperbrowser())
-        response = await scraper.run(
-            scraper.request_model(query="Artificial Intelligence"),
-        )
-        print(response.model_dump_json(indent=4))
+```python
+import asyncio
+from webquest.browsers import Hyperbrowser
+from webquest.scrapers import GoogleNewsSearch
 
-    if __name__ == "__main__":
-        asyncio.run(main())
-    ```
+async def main():
+    scraper = GoogleNewsSearch(browser=Hyperbrowser())
+    response = await scraper.run(
+        scraper.request_model(query="Artificial Intelligence"),
+    )
+    print(response.model_dump_json(indent=4))
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
 
 ## Settings
 

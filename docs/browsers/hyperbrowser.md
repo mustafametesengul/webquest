@@ -9,7 +9,7 @@ a Playwright BrowserContext connected to the remote session.
 
 **HyperbrowserSettings**
 
-
+Configuration settings for the Hyperbrowser.
 
 | Name | Type | Default | Description |
 |---|---|---|---|

@@ -28,7 +28,7 @@ Configuration settings for the YouTube transcript scraper.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| `character_limit` | `int` | `5000` |  |
+| `character_limit` | `int` | `5000` | The maximum number of characters to parse. |
 
 ## Request
 
@@ -38,7 +38,7 @@ Represents a request to extract the transcript of a YouTube video.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| `video_id` | `str` | **Required** |  |
+| `video_id` | `str` | **Required** | The ID of the YouTube video. |
 
 ## Response
 
@@ -48,4 +48,4 @@ Represents the extracted transcript of a YouTube video.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| `transcript` | `str` | **Required** |  |
+| `transcript` | `str` | **Required** | The transcript of the video. |

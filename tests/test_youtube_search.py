@@ -8,7 +8,7 @@ async def main() -> None:
     scraper = YouTubeSearch(browser=Hyperbrowser())
 
     response = await scraper.run(
-        scraper.request_model(query="H3 Podcast"),
+        scraper.request_model(query="TLDR News"),
     )
     print(response.model_dump_json(indent=4))
 

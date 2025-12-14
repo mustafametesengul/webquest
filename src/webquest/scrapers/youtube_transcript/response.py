@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class YouTubeTranscriptResponse(BaseModel):
@@ -6,4 +6,4 @@ class YouTubeTranscriptResponse(BaseModel):
     Represents the extracted transcript of a YouTube video.
     """
 
-    transcript: str
+    transcript: str = Field(..., description="The transcript of the video.")

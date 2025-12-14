@@ -39,7 +39,7 @@ Represents a request to search YouTube.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| `query` | `str` | **Required** |  |
+| `query` | `str` | **Required** | The search query. |
 
 ## Response
 
@@ -49,10 +49,10 @@ Represents the response from a YouTube search.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| `videos` | `list[Video]` | **Required** |  |
-| `channels` | `list[Channel]` | **Required** |  |
-| `posts` | `list[Post]` | **Required** |  |
-| `shorts` | `list[Short]` | **Required** |  |
+| `videos` | `list[Video]` | **Required** | The list of videos found. |
+| `channels` | `list[Channel]` | **Required** | The list of channels found. |
+| `posts` | `list[Post]` | **Required** | The list of posts found. |
+| `shorts` | `list[Short]` | **Required** | The list of shorts found. |
 
 **Channel**
 
@@ -60,11 +60,11 @@ Represents a YouTube channel.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| `id` | `str` | **Required** |  |
-| `url` | `str` | **Required** |  |
-| `name` | `str` | **Required** |  |
-| `description` | `str | None` | **Required** |  |
-| `subscribers` | `str` | **Required** |  |
+| `id` | `str` | **Required** | The channel ID. |
+| `url` | `str` | **Required** | The URL of the channel. |
+| `name` | `str` | **Required** | The name of the channel. |
+| `description` | `str | None` | `None` | The description of the channel. |
+| `subscribers` | `str` | **Required** | The number of subscribers. |
 
 **Post**
 
@@ -72,15 +72,15 @@ Represents a YouTube community post.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| `id` | `str` | **Required** |  |
-| `url` | `str` | **Required** |  |
-| `content` | `str` | **Required** |  |
-| `published_at` | `str` | **Required** |  |
-| `channel_id` | `str` | **Required** |  |
-| `channel_url` | `str` | **Required** |  |
-| `channel_name` | `str` | **Required** |  |
-| `comments` | `str` | **Required** |  |
-| `likes` | `str` | **Required** |  |
+| `id` | `str` | **Required** | The post ID. |
+| `url` | `str` | **Required** | The URL of the post. |
+| `content` | `str` | **Required** | The content of the post. |
+| `published_at` | `str` | **Required** | The publication date of the post. |
+| `channel_id` | `str` | **Required** | The channel ID. |
+| `channel_url` | `str` | **Required** | The URL of the channel. |
+| `channel_name` | `str` | **Required** | The name of the channel. |
+| `comments` | `str` | **Required** | The number of comments. |
+| `likes` | `str` | **Required** | The number of likes. |
 
 **Short**
 
@@ -88,10 +88,10 @@ Represents a YouTube Short.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| `id` | `str` | **Required** |  |
-| `url` | `str` | **Required** |  |
-| `title` | `str` | **Required** |  |
-| `views` | `str` | **Required** |  |
+| `id` | `str` | **Required** | The short ID. |
+| `url` | `str` | **Required** | The URL of the short. |
+| `title` | `str` | **Required** | The title of the short. |
+| `views` | `str` | **Required** | The number of views. |
 
 **Video**
 
@@ -99,12 +99,12 @@ Represents a YouTube video.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| `id` | `str` | **Required** |  |
-| `url` | `str` | **Required** |  |
-| `title` | `str` | **Required** |  |
-| `description` | `str` | **Required** |  |
-| `published_at` | `str` | **Required** |  |
-| `views` | `str` | **Required** |  |
-| `channel_id` | `str` | **Required** |  |
-| `channel_url` | `str` | **Required** |  |
-| `channel_name` | `str` | **Required** |  |
+| `id` | `str` | **Required** | The video ID. |
+| `url` | `str` | **Required** | The URL of the video. |
+| `title` | `str` | **Required** | The title of the video. |
+| `description` | `str` | **Required** | The description of the video. |
+| `published_at` | `str` | **Required** | The publication date of the video. |
+| `views` | `str` | **Required** | The number of views. |
+| `channel_id` | `str` | **Required** | The channel ID. |
+| `channel_url` | `str` | **Required** | The URL of the channel. |
+| `channel_name` | `str` | **Required** | The name of the channel. |

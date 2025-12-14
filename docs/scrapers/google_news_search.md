@@ -28,8 +28,8 @@ Configuration settings for the Google News search scraper.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| `result_limit` | `int` | `10` |  |
-| `character_limit` | `int` | `1000` |  |
+| `result_limit` | `int` | `10` | The maximum number of results to return. |
+| `character_limit` | `int` | `1000` | The maximum number of characters to parse. |
 
 ## Request
 
@@ -39,7 +39,7 @@ Represents a request to search Google News.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| `query` | `str` | **Required** |  |
+| `query` | `str` | **Required** | The search query. |
 
 ## Response
 
@@ -49,7 +49,7 @@ Represents the response from a Google News search.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| `articles` | `list[Article]` | **Required** |  |
+| `articles` | `list[Article]` | **Required** | The list of articles found. |
 
 **Article**
 
@@ -57,7 +57,7 @@ Represents a news article found in Google News.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| `site` | `str` | **Required** |  |
-| `url` | `str` | **Required** |  |
-| `title` | `str` | **Required** |  |
-| `published_at` | `str` | **Required** |  |
+| `site` | `str` | **Required** | The name of the news site. |
+| `url` | `str` | **Required** | The URL of the article. |
+| `title` | `str` | **Required** | The title of the article. |
+| `published_at` | `str` | **Required** | The publication date of the article. |

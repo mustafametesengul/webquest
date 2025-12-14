@@ -28,8 +28,8 @@ Configuration settings for the DuckDuckGo search scraper.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| `result_limit` | `int` | `10` |  |
-| `character_limit` | `int` | `1000` |  |
+| `result_limit` | `int` | `10` | The maximum number of results to return. |
+| `character_limit` | `int` | `1000` | The maximum number of characters to parse. |
 
 ## Request
 
@@ -39,7 +39,7 @@ Represents a request to search DuckDuckGo.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| `query` | `str` | **Required** |  |
+| `query` | `str` | **Required** | The search query. |
 
 ## Response
 
@@ -49,7 +49,7 @@ Represents the response from a DuckDuckGo search.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| `pages` | `list[Page]` | **Required** |  |
+| `pages` | `list[Page]` | **Required** | The list of pages found. |
 
 **Page**
 
@@ -57,7 +57,7 @@ Represents a web page found in DuckDuckGo search results.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| `site` | `str` | **Required** |  |
-| `url` | `str` | **Required** |  |
-| `title` | `str` | **Required** |  |
-| `description` | `str` | **Required** |  |
+| `site` | `str` | **Required** | The name of the website. |
+| `url` | `str` | **Required** | The URL of the page. |
+| `title` | `str` | **Required** | The title of the page. |
+| `description` | `str` | **Required** | The description of the page. |

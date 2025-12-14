@@ -21,7 +21,7 @@ Examples:
 
 ## Settings
 
-### YouTubeSearchSettings
+**YouTubeSearchSettings**
 
 Configuration settings for the YouTube search scraper.
 
@@ -32,12 +32,9 @@ Configuration settings for the YouTube search scraper.
 
 ## Request
 
-### YouTubeSearchRequest
+**YouTubeSearchRequest**
 
 Represents a request to search YouTube.
-
-Attributes:
-    query: The search query string.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
@@ -45,15 +42,9 @@ Attributes:
 
 ## Response
 
-### YouTubeSearchResponse
+**YouTubeSearchResponse**
 
 Represents the response from a YouTube search.
-
-Attributes:
-    videos: A list of videos found.
-    channels: A list of channels found.
-    posts: A list of community posts found.
-    shorts: A list of shorts found.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
@@ -62,16 +53,9 @@ Attributes:
 | `posts` | `list[Post]` | **Required** |  |
 | `shorts` | `list[Short]` | **Required** |  |
 
-### Channel
+**Channel**
 
 Represents a YouTube channel.
-
-Attributes:
-    id: The unique identifier of the channel.
-    url: The URL of the channel.
-    name: The name of the channel.
-    description: The description of the channel.
-    subscribers: The subscriber count of the channel.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
@@ -81,20 +65,9 @@ Attributes:
 | `description` | `str | None` | **Required** |  |
 | `subscribers` | `str` | **Required** |  |
 
-### Post
+**Post**
 
 Represents a YouTube community post.
-
-Attributes:
-    id: The unique identifier of the post.
-    url: The URL of the post.
-    content: The content of the post.
-    published_at: The publication date of the post.
-    channel_id: The ID of the channel that created the post.
-    channel_url: The URL of the channel.
-    channel_name: The name of the channel.
-    comments: The comment count of the post.
-    likes: The like count of the post.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
@@ -108,15 +81,9 @@ Attributes:
 | `comments` | `str` | **Required** |  |
 | `likes` | `str` | **Required** |  |
 
-### Short
+**Short**
 
 Represents a YouTube Short.
-
-Attributes:
-    id: The unique identifier of the short.
-    url: The URL of the short.
-    title: The title of the short.
-    views: The view count of the short.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
@@ -125,20 +92,9 @@ Attributes:
 | `title` | `str` | **Required** |  |
 | `views` | `str` | **Required** |  |
 
-### Video
+**Video**
 
 Represents a YouTube video.
-
-Attributes:
-    id: The unique identifier of the video.
-    url: The URL of the video.
-    title: The title of the video.
-    description: The description of the video.
-    published_at: The publication date of the video.
-    views: The view count of the video.
-    channel_id: The ID of the channel that uploaded the video.
-    channel_url: The URL of the channel.
-    channel_name: The name of the channel.
 
 | Name | Type | Default | Description |
 |---|---|---|---|

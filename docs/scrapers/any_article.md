@@ -4,7 +4,7 @@ Scraper to extract the main article from any web page using OpenAI.
 
 ## Settings
 
-### AnyArticleSettings
+**AnyArticleSettings**
 
 
 
@@ -16,7 +16,7 @@ Scraper to extract the main article from any web page using OpenAI.
 
 ## Request
 
-### AnyArticleRequest
+**AnyArticleRequest**
 
 
 
@@ -26,7 +26,7 @@ Scraper to extract the main article from any web page using OpenAI.
 
 ## Response
 
-### AnyArticleResponse
+**AnyArticleResponse**
 
 
 

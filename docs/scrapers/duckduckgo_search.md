@@ -4,7 +4,7 @@ Scraper to perform a DuckDuckGo web search and parse the results.
 
 ## Settings
 
-### DuckDuckGoSearchSettings
+**DuckDuckGoSearchSettings**
 
 
 
@@ -15,7 +15,7 @@ Scraper to perform a DuckDuckGo web search and parse the results.
 
 ## Request
 
-### DuckDuckGoSearchRequest
+**DuckDuckGoSearchRequest**
 
 
 
@@ -25,7 +25,7 @@ Scraper to perform a DuckDuckGo web search and parse the results.
 
 ## Response
 
-### DuckDuckGoSearchResponse
+**DuckDuckGoSearchResponse**
 
 
 
@@ -33,7 +33,7 @@ Scraper to perform a DuckDuckGo web search and parse the results.
 |---|---|---|---|
 | `pages` | `list[Page]` | **Required** |  |
 
-### Page
+**Page**
 
 
 

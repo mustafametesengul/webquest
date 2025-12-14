@@ -4,7 +4,7 @@ Scraper to extract the transcript of a YouTube video.
 
 ## Settings
 
-### YouTubeTranscriptSettings
+**YouTubeTranscriptSettings**
 
 
 
@@ -14,7 +14,7 @@ Scraper to extract the transcript of a YouTube video.
 
 ## Request
 
-### YouTubeTranscriptRequest
+**YouTubeTranscriptRequest**
 
 
 
@@ -24,7 +24,7 @@ Scraper to extract the transcript of a YouTube video.
 
 ## Response
 
-### YouTubeTranscriptResponse
+**YouTubeTranscriptResponse**
 
 
 

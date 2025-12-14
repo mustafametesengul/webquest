@@ -7,7 +7,7 @@ a Playwright BrowserContext connected to the remote session.
 
 ## Settings
 
-### HyperbrowserSettings
+**HyperbrowserSettings**
 
 
 

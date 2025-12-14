@@ -21,13 +21,9 @@ Examples:
 
 ## Settings
 
-### GoogleNewsSearchSettings
+**GoogleNewsSearchSettings**
 
 Configuration settings for the Google News search scraper.
-
-Attributes:
-    result_limit: The maximum number of results to return. Defaults to 10.
-    character_limit: The maximum number of characters to parse. Defaults to 1000.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
@@ -36,12 +32,9 @@ Attributes:
 
 ## Request
 
-### GoogleNewsSearchRequest
+**GoogleNewsSearchRequest**
 
 Represents a request to search Google News.
-
-Attributes:
-    query: The search query string.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
@@ -49,26 +42,17 @@ Attributes:
 
 ## Response
 
-### GoogleNewsSearchResponse
+**GoogleNewsSearchResponse**
 
 Represents the response from a Google News search.
-
-Attributes:
-    articles: A list of news articles found.
 
 | Name | Type | Default | Description |
 |---|---|---|---|
 | `articles` | `list[Article]` | **Required** |  |
 
-### Article
+**Article**
 
 Represents a news article found in Google News.
-
-Attributes:
-    site: The name of the news site.
-    url: The URL of the article.
-    title: The title of the article.
-    published_at: The publication date of the article.
 
 | Name | Type | Default | Description |
 |---|---|---|---|

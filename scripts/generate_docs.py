@@ -18,7 +18,6 @@ from webquest.scrapers.scraper import Scraper
 PROJECT_ROOT = Path(__file__).parent.parent
 DOCS_SCRAPERS_DIR = PROJECT_ROOT / "docs" / "scrapers"
 DOCS_BROWSERS_DIR = PROJECT_ROOT / "docs" / "browsers"
-INDEX_FILE = PROJECT_ROOT / "docs" / "index.md"
 
 
 def find_subclasses(package, base_class):
@@ -75,7 +74,7 @@ def format_type(annotation: Any) -> str:
     return type_str
 
 
-def model_to_markdown(model_cls: type[BaseModel], heading_level: int = 3) -> str:
+def model_to_markdown(model_cls: type[BaseModel]) -> str:
     """Generates Markdown documentation for a Pydantic model."""
     if not issubclass(model_cls, BaseModel):
         return ""
@@ -85,7 +84,7 @@ def model_to_markdown(model_cls: type[BaseModel], heading_level: int = 3) -> str
     if doc:
         doc = inspect.cleandoc(doc)
 
-    lines = [f"{'#' * heading_level} {model_cls.__name__}", "", doc, ""]
+    lines = [f"**{model_cls.__name__}**", "", doc, ""]
 
     fields = model_cls.model_fields
     if not fields:
@@ -163,22 +162,22 @@ def generate_docs():
             "",
             "## Settings",
             "",
-            model_to_markdown(settings_cls, heading_level=3),
+            model_to_markdown(settings_cls),
             "",
             "## Request",
             "",
-            model_to_markdown(request_cls, heading_level=3),
+            model_to_markdown(request_cls),
             "",
             "## Response",
             "",
-            model_to_markdown(response_cls, heading_level=3),
+            model_to_markdown(response_cls),
         ]
 
         other_models = get_response_models(response_cls)
         if other_models:
             content_parts.append("")
             for model in other_models:
-                content_parts.append(model_to_markdown(model, heading_level=3))
+                content_parts.append(model_to_markdown(model))
                 content_parts.append("")
 
         doc_content = "\n".join(content_parts)
@@ -222,7 +221,7 @@ def generate_docs():
             "",
             "## Settings",
             "",
-            model_to_markdown(settings_cls, heading_level=3),
+            model_to_markdown(settings_cls),
         ]
 
         doc_content = "\n".join(content_parts)
@@ -237,44 +236,6 @@ def generate_docs():
     # Sort
     scrapers_list.sort(key=lambda x: x["name"])
     browsers_list.sort(key=lambda x: x["name"])
-
-    # Update index.md
-    update_index_md(scrapers_list, browsers_list)
-
-
-def update_index_md(scrapers, browsers):
-    """Updates the Scrapers and Browsers section in docs/index.md."""
-    if not INDEX_FILE.exists():
-        print(f"Warning: {INDEX_FILE} does not exist.")
-        return
-
-    with open(INDEX_FILE, "r", encoding="utf-8") as f:
-        content = f.read()
-
-    base_content = content
-    if "## Scrapers" in content:
-        base_content = content.split("## Scrapers")[0]
-    elif "## Browsers" in content:
-        base_content = content.split("## Browsers")[0]
-
-    new_content = base_content.strip() + "\n\n"
-
-    # Add Scrapers
-    new_content += "## Scrapers\n\n"
-    for scraper in scrapers:
-        new_content += f"- [{scraper['name']}]({scraper['file']})\n"
-
-    new_content += "\n"
-
-    # Add Browsers
-    new_content += "## Browsers\n\n"
-    for browser in browsers:
-        new_content += f"- [{browser['name']}]({browser['file']})\n"
-
-    with open(INDEX_FILE, "w", encoding="utf-8") as f:
-        f.write(new_content)
-
-    print(f"Updated {INDEX_FILE}")
 
 
 if __name__ == "__main__":

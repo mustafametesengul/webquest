@@ -8,6 +8,8 @@ WebQuest is an extensible Python toolkit for high-level web scraping, built arou
 
 For detailed usage instructions and API reference, please visit the [documentation](https://mustafametesengul.github.io/webquest/).
 
+To use WebQuest as a Model Context Protocol (MCP) server, please visit the [WebQuest MCP repository](https://github.com/mustafametesengul/webquest-mcp).
+
 **Scrapers**
 
 - **[Any Article:](docs/scrapers/any_article.md)** Extracts readable content from arbitrary web articles.

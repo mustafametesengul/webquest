@@ -1,10 +1,13 @@
 import asyncio
 
+import pytest
+
 from webquest.browsers import Hyperbrowser
 from webquest.scrapers import DuckDuckGoSearch
 
 
-async def main() -> None:
+@pytest.mark.integration
+async def test_duckduckgo_search() -> None:
     scraper = DuckDuckGoSearch(browser=Hyperbrowser())
 
     responses = await scraper.run(
@@ -16,4 +19,4 @@ async def main() -> None:
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    asyncio.run(test_duckduckgo_search())

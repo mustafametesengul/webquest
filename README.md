@@ -12,15 +12,15 @@ To use WebQuest as a Model Context Protocol (MCP) server, please visit the [WebQ
 
 **Scrapers**
 
-- **[Any Article:](docs/scrapers/any_article.md)** Extracts readable content from arbitrary web articles.
-- **[DuckDuckGo Search:](docs/scrapers/duckduckgo_search.md)** General web search using DuckDuckGo.
-- **[Google News Search:](docs/scrapers/google_news_search.md)** News-focused search via Google News.
-- **[YouTube Search:](docs/scrapers/youtube_search.md)** Search YouTube videos, channels, posts, and shorts.
-- **[YouTube Transcript:](docs/scrapers/youtube_transcript.md)** Fetch transcripts for YouTube videos.
+- **[Any Article:](https://mustafametesengul.github.io/webquest/scrapers/any_article/)** Extracts readable content from arbitrary web articles.
+- **[DuckDuckGo Search:](https://mustafametesengul.github.io/webquest/scrapers/duckduckgo_search/)** General web search using DuckDuckGo.
+- **[Google News Search:](https://mustafametesengul.github.io/webquest/scrapers/google_news_search/)** News-focused search via Google News.
+- **[YouTube Search:](https://mustafametesengul.github.io/webquest/scrapers/youtube_search/)** Search YouTube videos, channels, posts, and shorts.
+- **[YouTube Transcript:](https://mustafametesengul.github.io/webquest/scrapers/youtube_transcript/)** Fetch transcripts for YouTube videos.
 
 **Browsers**
 
-- **[Hyperbrowser:](docs/browsers/hyperbrowser.md)** A cloud-based browser service for running Playwright scrapers without managing infrastructure.
+- **[Hyperbrowser:](https://mustafametesengul.github.io/webquest/browsers/hyperbrowser/)** A cloud-based browser service for running Playwright scrapers without managing infrastructure.
 
 ## Installation
 

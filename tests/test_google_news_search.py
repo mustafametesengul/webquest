@@ -1,10 +1,13 @@
 import asyncio
 
+import pytest
+
 from webquest.browsers import Hyperbrowser
 from webquest.scrapers import GoogleNewsSearch
 
 
-async def main() -> None:
+@pytest.mark.integration
+async def test_google_news_search() -> None:
     scraper = GoogleNewsSearch(browser=Hyperbrowser())
 
     response = await scraper.run(
@@ -14,4 +17,4 @@ async def main() -> None:
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    asyncio.run(test_google_news_search())

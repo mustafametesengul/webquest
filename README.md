@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="src/webquest/assets/logo.svg" alt="WebQuest Logo" width="300">
+  <img src="https://github.com/mustafametesengul/webquest/raw/main/docs/images/logo.svg" alt="WebQuest Logo" width="260">
 </p>
 
 # WebQuest

@@ -18,14 +18,20 @@ Format code:
 uv run ruff format
 ```
 
-Run tests:
+Generate documentation:
+
+```bash
+uv run python scripts/generate_docs.py
+```
+
+Run unit tests:
 
 ```bash
 uv run pytest
 ```
 
-Generate documentation:
+Run integration tests:
 
 ```bash
-uv run python scripts/generate_docs.py
+uv run pytest -m integration
 ```

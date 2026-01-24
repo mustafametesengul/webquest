@@ -1,6 +1,6 @@
 [project]
 name = "webquest"
-version = "0.12.5"
+version = "0.12.6"
 description = "WebQuest is an extensible Python toolkit for high-level web scraping, built around a generic Playwright-based scraper interface for quickly building, running, and reusing custom scrapers."
 readme = "README.md"
 license = "Apache-2.0"
@@ -42,6 +42,5 @@ addopts = [
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
 
-[[tool.mypy.overrides]]
-module = ["hyperbrowser.*"]
-ignore_missing_imports = true
+[tool.mypy]
+disable_error_code = ["import-untyped"]

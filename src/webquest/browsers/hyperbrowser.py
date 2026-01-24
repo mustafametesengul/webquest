@@ -69,14 +69,14 @@ class Hyperbrowser(Browser[HyperbrowserSettings]):
         super().__init__(settings=settings)
 
         if client is None:
-            api_key = (
+            api_key: str | None = (
                 self._settings.hyperbrowser_api_key.get_secret_value()
                 if self._settings.hyperbrowser_api_key
                 else None
             )
             client = AsyncHyperbrowser(api_key=api_key)
 
-        self._client = client
+        self._client: AsyncHyperbrowser = client
 
         self._semaphore = asyncio.Semaphore(self._settings.max_concurrent_sessions)
 
@@ -94,8 +94,15 @@ class Hyperbrowser(Browser[HyperbrowserSettings]):
         """
         async with self._semaphore:
             session = await self._client.sessions.create()
+
+            url = session.ws_endpoint
+            if url is None:
+                raise RuntimeError(
+                    "The session does not have a valid WebSocket endpoint."
+                )
+
             async with async_playwright() as p:
-                browser = await p.chromium.connect_over_cdp(session.ws_endpoint)
+                browser = await p.chromium.connect_over_cdp(url)
                 context = browser.contexts[0]
                 try:
                     yield context

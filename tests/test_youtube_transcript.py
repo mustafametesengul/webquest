@@ -1,12 +1,9 @@
 import asyncio
 
-import pytest
-
 from webquest.browsers import Hyperbrowser
 from webquest.scrapers import YouTubeTranscript
 
 
-@pytest.mark.integration
 async def test_youtube_transcript() -> None:
     scraper = YouTubeTranscript(browser=Hyperbrowser())
 

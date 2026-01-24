@@ -1,6 +1,6 @@
 import asyncio
 from abc import ABC, abstractmethod
-from typing import ClassVar, Generic, TypeVar, overload
+from typing import Awaitable, ClassVar, Generic, TypeVar, overload
 
 from playwright.async_api import BrowserContext
 from pydantic import BaseModel
@@ -41,8 +41,10 @@ class Scraper(ABC, Generic[TSettings, TRequest, TResponse, TRaw]):
             browser (Browser): The browser instance to use for scraping.
             settings (TSettings | None): Optional settings for the scraper.
         """
-        self._browser = browser
-        self._settings = settings if settings is not None else self.settings_model()
+        self._browser: Browser[TSettings] = browser
+        if settings is None:
+            settings = self.settings_model()
+        self._settings: TSettings = settings
 
     @abstractmethod
     async def fetch(self, context: BrowserContext, request: TRequest) -> TRaw:
@@ -113,10 +115,19 @@ class Scraper(ABC, Generic[TSettings, TRequest, TResponse, TRaw]):
                 return_single = True
 
         async with self._browser.get_context() as context:
-            raw_items = await asyncio.gather(
-                *[self.fetch(context, request) for request in normalized_requests]
-            )
-        responses = await asyncio.gather(*[self.parse(raw) for raw in raw_items])
+            fetch_coroutines: list[Awaitable[TRaw]] = []
+            for request in normalized_requests:
+                fetch_coroutine = self.fetch(context, request)
+                fetch_coroutines.append(fetch_coroutine)
+
+            raw_items = await asyncio.gather(*fetch_coroutines)
+
+        parse_coroutines: list[Awaitable[TResponse]] = []
+        for raw in raw_items:
+            parse_coroutine = self.parse(raw)
+            parse_coroutines.append(parse_coroutine)
+
+        responses = await asyncio.gather(*parse_coroutines)
         if return_single:
             return responses[0]
         return responses

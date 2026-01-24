@@ -1,12 +1,9 @@
 import asyncio
 
-import pytest
-
 from webquest.browsers import Hyperbrowser
 from webquest.scrapers import YouTubeSearch
 
 
-@pytest.mark.integration
 async def test_youtube_search() -> None:
     scraper = YouTubeSearch(browser=Hyperbrowser())
 

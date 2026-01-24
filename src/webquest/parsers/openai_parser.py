@@ -19,13 +19,13 @@ class OpenAIParser(Generic[TResponse]):
         character_limit: int = 5000,
         client: AsyncOpenAI | None = None,
     ) -> None:
-        self._response_type = response_type
+        self._response_type: type[TResponse] = response_type
         if client is None:
             client = AsyncOpenAI(api_key=openai_api_key)
-        self._client = client
-        self._model = model
-        self._character_limit = character_limit
-        self._input = input
+        self._client: AsyncOpenAI = client
+        self._model: str = model
+        self._character_limit: int = character_limit
+        self._input: str = input
 
     async def parse(self, html: str) -> TResponse:
         soup = BeautifulSoup(html, "html.parser")

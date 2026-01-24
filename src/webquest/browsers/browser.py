@@ -27,7 +27,10 @@ class Browser(ABC, Generic[TSettings]):
         Args:
             settings (TSettings | None): Optional settings for the browser.
         """
-        self._settings = settings if settings is not None else self.settings_model()
+
+        if settings is None:
+            settings = self.settings_model()
+        self._settings: TSettings = settings
 
     @abstractmethod
     def get_context(self) -> AsyncContextManager[BrowserContext]:

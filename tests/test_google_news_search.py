@@ -1,12 +1,9 @@
 import asyncio
 
-import pytest
-
 from webquest.browsers import Hyperbrowser
 from webquest.scrapers import GoogleNewsSearch
 
 
-@pytest.mark.integration
 async def test_google_news_search() -> None:
     scraper = GoogleNewsSearch(browser=Hyperbrowser())
 

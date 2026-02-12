@@ -1,11 +1,11 @@
-name: Unit tests
+name: Code Check
 
 on:
   pull_request:
     branches: [main]
 
 jobs:
-  test:
+  code-check:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,5 +25,5 @@ jobs:
       - name: Install the project
         run: uv sync --locked --all-extras --dev
 
-      - name: Run tests
-        run: uv run poe test
+      - name: Check code
+        run: uv run poe check

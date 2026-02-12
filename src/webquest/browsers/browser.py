@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import AsyncContextManager, ClassVar, Generic, TypeVar
+from typing import AsyncContextManager, Generic, TypeVar
 
 from playwright.async_api import BrowserContext
 from pydantic_settings import BaseSettings
@@ -18,7 +18,7 @@ class Browser(ABC, Generic[TSettings]):
         TSettings: The type of the settings object for the browser.
     """
 
-    settings_model: ClassVar[type[TSettings]]
+    settings_model: type[TSettings]
 
     def __init__(self, settings: TSettings | None = None) -> None:
         """

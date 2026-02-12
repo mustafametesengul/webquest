@@ -12,14 +12,20 @@ Format code:
 uv run poe format
 ```
 
-Generate documentation:
+Check code:
 
 ```bash
-uv run poe doc
+uv run poe check
 ```
 
 Run tests:
 
 ```bash
 uv run poe test
+```
+
+Generate documentation:
+
+```bash
+uv run poe doc
 ```

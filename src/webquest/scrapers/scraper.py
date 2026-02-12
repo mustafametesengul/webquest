@@ -1,6 +1,6 @@
 import asyncio
 from abc import ABC, abstractmethod
-from typing import Awaitable, ClassVar, Generic, TypeVar, overload
+from typing import Awaitable, Generic, TypeVar, overload
 
 from playwright.async_api import BrowserContext
 from pydantic import BaseModel
@@ -29,9 +29,9 @@ class Scraper(ABC, Generic[TSettings, TRequest, TResponse, TRaw]):
         TRaw: The type of the raw data fetched from the browser.
     """
 
-    settings_model: ClassVar[type[TSettings]]
-    request_model: ClassVar[type[TRequest]]
-    response_model: ClassVar[type[TResponse]]
+    settings_model: type[TSettings]
+    request_model: type[TRequest]
+    response_model: type[TResponse]
 
     def __init__(self, browser: Browser, settings: TSettings | None = None) -> None:
         """
